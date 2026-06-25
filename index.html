@@ -3,130 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>DARK RUINS 3D — v2.0</title>
+<title>DARK RUINS 3D — v2.1 Flat World</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#0a0608;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;}
+body{background:#0a0608;overflow:hidden;font-family:'Courier New',monospace;touch-action:none;cursor:crosshair;}
 #game-container{width:100vw;height:100vh;position:relative;overflow:hidden;}
 #three-canvas{display:block;width:100%;height:100%;}
 #hud{display:none;}
-#intro-screen{
-  position:absolute;inset:0;background:#000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:10;
-}
-#boss-screen{
-  position:absolute;inset:0;background:#000;
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  overflow-y:auto;z-index:20;
-}
-#death-screen{
-  position:absolute;inset:0;background:rgba(0,0,0,0.85);
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  z-index:15;
-}
+#intro-screen{position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;}
+#boss-screen{position:absolute;inset:0;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;overflow-y:auto;z-index:20;}
+#death-screen{position:absolute;inset:0;background:rgba(0,0,0,0.88);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:15;}
 button{font-family:'Courier New',monospace;}
 button:hover{opacity:0.75;}
 
-/* Minimap */
-#minimap-container{
-  position:absolute;bottom:60px;right:16px;width:110px;height:110px;
-  border:1px solid #222;border-radius:50%;overflow:hidden;
-  background:rgba(0,0,0,0.6);z-index:5;
-}
+#minimap-container{position:absolute;bottom:60px;right:16px;width:120px;height:120px;border:1px solid #222;border-radius:50%;overflow:hidden;background:rgba(0,0,0,0.7);z-index:5;}
 #minimap-canvas{width:100%;height:100%;}
 
-/* Touch controls */
-#touch-left{
-  position:absolute;bottom:30px;left:30px;width:100px;height:100px;
-  border:1px solid rgba(255,255,255,0.1);border-radius:50%;
-  display:none;z-index:30;background:rgba(0,0,0,0.3);
-}
-#touch-knob{
-  position:absolute;width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
-  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
-}
-#touch-right{
-  position:absolute;bottom:30px;right:140px;width:60px;height:60px;
-  border:1px solid rgba(255,255,255,0.1);border-radius:50%;
-  display:none;z-index:30;background:rgba(0,0,0,0.3);
-}
-#touch-btn-e{
-  position:absolute;bottom:100px;right:150px;width:48px;height:48px;
-  border:1px solid rgba(224,90,0,0.4);border-radius:50%;
-  display:none;z-index:30;background:rgba(224,90,0,0.15);
-  color:#e05a00;font-size:14px;text-align:center;line-height:48px;
-  font-family:'Courier New',monospace;
-}
-#touch-sprint{
-  position:absolute;bottom:140px;left:50px;width:48px;height:48px;
-  border:1px solid rgba(0,229,255,0.3);border-radius:50%;
-  display:none;z-index:30;background:rgba(0,229,255,0.1);
-  color:#00e5ff;font-size:10px;text-align:center;line-height:48px;
-  font-family:'Courier New',monospace;
-}
+#compass{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:10px;color:#555;letter-spacing:6px;z-index:5;}
 
-/* Screen shake */
-#game-container.shake{animation:shake 0.15s ease-in-out;}
-@keyframes shake{
-  0%,100%{transform:translate(0,0);}
-  25%{transform:translate(-3px,2px);}
-  50%{transform:translate(2px,-3px);}
-  75%{transform:translate(-2px,1px);}
-}
+/* Touch */
+#touch-left{position:absolute;bottom:30px;left:30px;width:110px;height:110px;border:1px solid rgba(255,255,255,0.08);border-radius:50%;display:none;z-index:30;background:rgba(0,0,0,0.25);}
+#touch-knob{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+#touch-btn-e{position:absolute;bottom:110px;right:160px;width:50px;height:50px;border:1px solid rgba(224,90,0,0.4);border-radius:50%;display:none;z-index:30;background:rgba(224,90,0,0.12);color:#e05a00;font-size:15px;text-align:center;line-height:50px;font-family:'Courier New',monospace;pointer-events:all;}
+#touch-sprint{position:absolute;bottom:160px;left:45px;width:50px;height:50px;border:1px solid rgba(0,229,255,0.25);border-radius:50%;display:none;z-index:30;background:rgba(0,229,255,0.08);color:#00e5ff;font-size:9px;text-align:center;line-height:50px;font-family:'Courier New',monospace;pointer-events:all;letter-spacing:1px;}
+
+#game-container.shake{animation:shake 0.12s ease-in-out;}
+@keyframes shake{0%,100%{transform:translate(0,0);}25%{transform:translate(-3px,2px);}50%{transform:translate(2px,-3px);}75%{transform:translate(-2px,1px);}}
+
+/* Crosshair */
+#crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;z-index:4;pointer-events:none;display:none;}
+#crosshair::before,#crosshair::after{content:'';position:absolute;background:rgba(255,255,255,0.2);}
+#crosshair::before{width:1px;height:100%;left:50%;transform:translateX(-50%);}
+#crosshair::after{width:100%;height:1px;top:50%;transform:translateY(-50%);}
 </style>
 </head>
 <body>
 <div id="game-container">
   <canvas id="three-canvas"></canvas>
+  <div id="crosshair"></div>
 
   <div id="ui-overlay" style="position:absolute;inset:0;pointer-events:none;">
     <div id="hud">
+      <div id="compass">N</div>
+
       <!-- Top-left: HP + Sprint -->
-      <div style="position:absolute;top:16px;left:16px;">
+      <div style="position:absolute;top:36px;left:16px;">
         <div style="font-size:9px;letter-spacing:3px;color:#666;margin-bottom:4px;">HP</div>
-        <div style="width:120px;height:6px;background:#111;border:1px solid #222;border-radius:2px;overflow:hidden;">
-          <div id="hp-bar" style="height:100%;width:100%;background:#00e5ff;transition:width 0.3s;border-radius:2px;"></div>
+        <div style="width:130px;height:6px;background:#111;border:1px solid #222;border-radius:3px;overflow:hidden;">
+          <div id="hp-bar" style="height:100%;width:100%;background:#00e5ff;transition:width 0.3s;border-radius:3px;"></div>
         </div>
         <div id="hp-text" style="font-size:9px;color:#00e5ff;margin-top:3px;">100 / 100</div>
-        <div style="font-size:9px;letter-spacing:3px;color:#555;margin-top:8px;margin-bottom:4px;">SPRINT</div>
+        <div style="font-size:8px;letter-spacing:2px;color:#444;margin-top:8px;margin-bottom:3px;">SPRINT</div>
         <div style="width:90px;height:4px;background:#111;border:1px solid #1a1a1a;border-radius:2px;overflow:hidden;">
-          <div id="sprint-bar" style="height:100%;width:100%;background:#00e5ff;transition:width 0.2s;border-radius:2px;"></div>
+          <div id="sprint-bar" style="height:100%;width:100%;background:#00e5ff;transition:width 0.15s;border-radius:2px;"></div>
         </div>
       </div>
 
       <!-- Top-right: zone + shards -->
-      <div style="position:absolute;top:16px;right:16px;text-align:right;">
-        <div style="font-size:9px;letter-spacing:2px;color:#444;">ZONA ROJA // SECTOR 9</div>
+      <div style="position:absolute;top:36px;right:16px;text-align:right;">
+        <div style="font-size:8px;letter-spacing:2px;color:#333;">ZONA ROJA // SECTOR 9</div>
         <div id="shard-count" style="font-size:10px;color:#00e5ff;margin-top:6px;letter-spacing:1px;">FRAGMENTOS: 0 / 0</div>
         <div id="boss-nearby" style="font-size:10px;color:#e05a00;margin-top:4px;opacity:0;transition:opacity 0.5s;">⚠ PRESENCIA DETECTADA</div>
       </div>
 
-      <!-- Bottom: controls hint -->
+      <!-- Bottom controls -->
       <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);text-align:center;">
-        <div style="font-size:9px;color:#333;letter-spacing:2px;">WASD — mover &nbsp;|&nbsp; SHIFT — sprint &nbsp;|&nbsp; clic — cámara &nbsp;|&nbsp; E — interactuar</div>
+        <div style="font-size:8px;color:#282828;letter-spacing:2px;">WASD — mover &nbsp;|&nbsp; SHIFT — sprint &nbsp;|&nbsp; MOUSE — cámara &nbsp;|&nbsp; E — interactuar</div>
       </div>
 
       <!-- Interact prompt -->
-      <div id="interact-prompt" style="position:absolute;bottom:50px;left:50%;transform:translateX(-50%);font-size:11px;color:#e05a00;letter-spacing:2px;opacity:0;transition:opacity 0.3s;pointer-events:none;">
+      <div id="interact-prompt" style="position:absolute;bottom:50px;left:50%;transform:translateX(-50%);font-size:12px;color:#e05a00;letter-spacing:2px;opacity:0;transition:opacity 0.3s;pointer-events:none;">
         [E] ENTRAR AL PORTAL
       </div>
 
       <!-- Minimap -->
       <div id="minimap-container">
-        <canvas id="minimap-canvas" width="110" height="110"></canvas>
+        <canvas id="minimap-canvas" width="120" height="120"></canvas>
       </div>
     </div>
 
-    <!-- INTRO SCREEN -->
+    <!-- INTRO -->
     <div id="intro-screen" style="pointer-events:all;">
       <div style="font-size:9px;letter-spacing:6px;color:#333;margin-bottom:12px;">AÑO 2347 // ZONA ROJA</div>
-      <div style="font-size:36px;font-weight:900;color:#e05a00;letter-spacing:3px;margin-bottom:6px;">DARK RUINS</div>
+      <div style="font-size:38px;font-weight:900;color:#e05a00;letter-spacing:3px;margin-bottom:6px;">DARK RUINS</div>
       <div style="font-size:10px;color:#444;letter-spacing:4px;margin-bottom:40px;">MUNDO ABIERTO 3D</div>
-      <div style="font-size:12px;color:#555;margin-bottom:32px;text-align:center;line-height:2;max-width:360px;">
+      <div style="font-size:11px;color:#555;margin-bottom:32px;text-align:center;line-height:2;max-width:380px;">
         Explora el planeta devastado.<br>
-        Recoge fragmentos de energía dispersos.<br>
+        Recoge fragmentos de energía dispersos por el terreno.<br>
         Encuentra el portal naranja y enfrenta al UNIDAD Λ-7.
       </div>
       <button id="start-btn" style="background:transparent;border:1px solid #e05a00;color:#e05a00;padding:14px 48px;font-size:12px;letter-spacing:3px;cursor:pointer;">
@@ -134,14 +97,14 @@ button:hover{opacity:0.75;}
       </button>
     </div>
 
-    <!-- BOSS SCREEN -->
+    <!-- BOSS -->
     <div id="boss-screen" style="pointer-events:all;">
       <div id="boss-fight-content" style="width:100%;max-width:440px;padding:20px;"></div>
     </div>
 
-    <!-- DEATH SCREEN -->
+    <!-- DEATH -->
     <div id="death-screen" style="pointer-events:all;">
-      <div style="font-size:20px;color:#ff003c;letter-spacing:4px;margin-bottom:16px;">HAS MUERTO</div>
+      <div style="font-size:22px;color:#ff003c;letter-spacing:5px;margin-bottom:16px;">HAS MUERTO</div>
       <div style="font-size:11px;color:#555;margin-bottom:32px;text-align:center;line-height:1.8;max-width:300px;">
         El planeta no perdona. Tus restos se integran a las ruinas.
       </div>
@@ -152,12 +115,9 @@ button:hover{opacity:0.75;}
   </div>
 
   <!-- Touch controls -->
-  <div id="touch-left" style="pointer-events:all;">
-    <div id="touch-knob"></div>
-  </div>
-  <div id="touch-right" style="pointer-events:all;"></div>
-  <div id="touch-btn-e" style="pointer-events:all;">E</div>
-  <div id="touch-sprint" style="pointer-events:all;">RUN</div>
+  <div id="touch-left" style="pointer-events:all;"><div id="touch-knob"></div></div>
+  <div id="touch-btn-e">E</div>
+  <div id="touch-sprint">RUN</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -165,1281 +125,967 @@ button:hover{opacity:0.75;}
 (function(){
 
 /* ═══════════════════════════════════════════════════════════════════
-   1. AUDIO ENGINE — Procedural sound via Web Audio API
+   1. AUDIO ENGINE
    ═══════════════════════════════════════════════════════════════════ */
-const Audio = {
-  ctx: null, master: null, ready: false,
-  ambientNodes: [],
-
-  init() {
-    if (this.ready) return;
-    try {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      this.master = this.ctx.createGain();
-      this.master.gain.value = 0.25;
-      this.master.connect(this.ctx.destination);
-      this.ready = true;
-    } catch(e) { console.warn('Audio unavailable'); }
+const SFX = {
+  ctx:null, master:null, ready:false, ambientNodes:[],
+  init(){
+    if(this.ready)return;
+    try{
+      this.ctx=new(window.AudioContext||window.webkitAudioContext)();
+      this.master=this.ctx.createGain(); this.master.gain.value=0.25;
+      this.master.connect(this.ctx.destination); this.ready=true;
+    }catch(e){}
   },
-
-  resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); },
-
-  /* Low drone that plays continuously */
-  startAmbient() {
-    if (!this.ready) return;
-    const c = this.ctx;
-    const osc1 = c.createOscillator(), osc2 = c.createOscillator();
-    const gain = c.createGain(), filter = c.createBiquadFilter();
-    osc1.type = 'sawtooth'; osc1.frequency.value = 55;
-    osc2.type = 'sine'; osc2.frequency.value = 82.5;
-    filter.type = 'lowpass'; filter.frequency.value = 180; filter.Q.value = 4;
-    gain.gain.value = 0.06;
-    osc1.connect(filter); osc2.connect(filter);
-    filter.connect(gain); gain.connect(this.master);
-    osc1.start(); osc2.start();
-    // LFO on filter for eerie modulation
-    const lfo = c.createOscillator(), lg = c.createGain();
-    lfo.frequency.value = 0.08; lg.gain.value = 80;
-    lfo.connect(lg); lg.connect(filter.frequency); lfo.start();
-    this.ambientNodes.push(osc1, osc2, lfo);
+  resume(){if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();},
+  startAmbient(){
+    if(!this.ready)return;
+    const c=this.ctx;
+    const o1=c.createOscillator(),o2=c.createOscillator();
+    const g=c.createGain(),f=c.createBiquadFilter();
+    o1.type='sawtooth';o1.frequency.value=55;o2.type='sine';o2.frequency.value=82.5;
+    f.type='lowpass';f.frequency.value=180;f.Q.value=4;g.gain.value=0.06;
+    o1.connect(f);o2.connect(f);f.connect(g);g.connect(this.master);
+    o1.start();o2.start();
+    const lfo=c.createOscillator(),lg=c.createGain();
+    lfo.frequency.value=0.08;lg.gain.value=80;
+    lfo.connect(lg);lg.connect(f.frequency);lfo.start();
+    this.ambientNodes.push(o1,o2,lfo);
   },
-
-  stopAmbient() {
-    this.ambientNodes.forEach(n => { try { n.stop(); } catch(e){} });
-    this.ambientNodes = [];
+  stopAmbient(){this.ambientNodes.forEach(n=>{try{n.stop();}catch(e){}});this.ambientNodes=[];},
+  _noise(dur,freq,vol){
+    if(!this.ready)return;
+    const c=this.ctx,t=c.currentTime,sr=c.sampleRate,len=sr*dur;
+    const buf=c.createBuffer(1,len,sr),d=buf.getChannelData(0);
+    for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(len*0.08));
+    const s=c.createBufferSource();s.buffer=buf;
+    const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=freq;
+    const g=c.createGain();g.gain.value=vol;
+    s.connect(f);f.connect(g);g.connect(this.master);s.start();
   },
-
-  /* Short noise burst — footsteps */
-  playFootstep() {
-    if (!this.ready) return;
-    const c = this.ctx, sr = c.sampleRate;
-    const len = sr * 0.04;
-    const buf = c.createBuffer(1, len, sr);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(len*0.08));
-    const src = c.createBufferSource(); src.buffer = buf;
-    const f = c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=600+Math.random()*400;
-    const g = c.createGain(); g.gain.value = 0.12;
-    src.connect(f); f.connect(g); g.connect(this.master); src.start();
+  playFootstep(){this._noise(0.04,500+Math.random()*400,0.12);},
+  playPickup(){
+    if(!this.ready)return;
+    const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.setValueAtTime(500,t);o.frequency.exponentialRampToValueAtTime(1200,t+0.12);
+    g.gain.setValueAtTime(0.18,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+    o.connect(g);g.connect(this.master);o.start(t);o.stop(t+0.25);
   },
-
-  /* Ascending chime — item pickup */
-  playPickup() {
-    if (!this.ready) return;
-    const c = this.ctx, t = c.currentTime;
-    const o = c.createOscillator(), g = c.createGain();
-    o.type='sine'; o.frequency.setValueAtTime(500,t); o.frequency.exponentialRampToValueAtTime(1200,t+0.12);
-    g.gain.setValueAtTime(0.18,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
-    o.connect(g); g.connect(this.master); o.start(t); o.stop(t+0.25);
+  playHit(){
+    if(!this.ready)return;
+    this._noise(0.08,800,0.25);
+    const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.setValueAtTime(250,t);o.frequency.exponentialRampToValueAtTime(60,t+0.12);
+    g.gain.setValueAtTime(0.12,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.12);
+    o.connect(g);g.connect(this.master);o.start(t);o.stop(t+0.12);
   },
-
-  /* Impact noise + sine sweep — hitting boss */
-  playHit() {
-    if (!this.ready) return;
-    const c = this.ctx, t = c.currentTime, sr = c.sampleRate;
-    const len = sr*0.08;
-    const buf = c.createBuffer(1,len,sr);
-    const d = buf.getChannelData(0);
-    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(len*0.04));
-    const src=c.createBufferSource(); src.buffer=buf;
-    const g1=c.createGain(); g1.gain.value=0.25;
-    src.connect(g1); g1.connect(this.master); src.start();
-    const o=c.createOscillator(), g2=c.createGain();
-    o.type='sine'; o.frequency.setValueAtTime(250,t); o.frequency.exponentialRampToValueAtTime(60,t+0.12);
-    g2.gain.setValueAtTime(0.12,t); g2.gain.exponentialRampToValueAtTime(0.001,t+0.12);
-    o.connect(g2); g2.connect(this.master); o.start(t); o.stop(t+0.12);
+  playDamage(){
+    if(!this.ready)return;
+    const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();
+    o.type='sawtooth';o.frequency.setValueAtTime(180,t);o.frequency.exponentialRampToValueAtTime(30,t+0.18);
+    f.type='lowpass';f.frequency.value=400;
+    g.gain.setValueAtTime(0.2,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+    o.connect(f);f.connect(g);g.connect(this.master);o.start(t);o.stop(t+0.18);
   },
-
-  /* Receiving damage */
-  playDamage() {
-    if (!this.ready) return;
-    const c = this.ctx, t = c.currentTime;
-    const o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
-    o.type='sawtooth'; o.frequency.setValueAtTime(180,t); o.frequency.exponentialRampToValueAtTime(30,t+0.18);
-    f.type='lowpass'; f.frequency.value=400;
-    g.gain.setValueAtTime(0.2,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
-    o.connect(f); f.connect(g); g.connect(this.master); o.start(t); o.stop(t+0.18);
-  },
-
-  /* Heal sound */
-  playHeal() {
-    if (!this.ready) return;
-    const c = this.ctx, t = c.currentTime;
-    const o=c.createOscillator(), g=c.createGain();
-    o.type='sine'; o.frequency.setValueAtTime(300,t); o.frequency.linearRampToValueAtTime(600,t+0.2);
+  playHeal(){
+    if(!this.ready)return;
+    const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.setValueAtTime(300,t);o.frequency.linearRampToValueAtTime(600,t+0.2);
     o.frequency.linearRampToValueAtTime(900,t+0.4);
-    g.gain.setValueAtTime(0.1,t); g.gain.linearRampToValueAtTime(0.15,t+0.2);
+    g.gain.setValueAtTime(0.1,t);g.gain.linearRampToValueAtTime(0.15,t+0.2);
     g.gain.exponentialRampToValueAtTime(0.001,t+0.5);
-    o.connect(g); g.connect(this.master); o.start(t); o.stop(t+0.5);
+    o.connect(g);g.connect(this.master);o.start(t);o.stop(t+0.5);
   },
-
-  /* Portal proximity hum */
-  _portalOsc: null, _portalGain: null,
-  setPortalVolume(v) {
-    if (!this.ready) return;
-    if (!this._portalOsc) {
+  _portalOsc:null,_portalGain:null,
+  setPortalVolume(v){
+    if(!this.ready)return;
+    if(!this._portalOsc){
       const c=this.ctx;
-      this._portalOsc=c.createOscillator(); this._portalGain=c.createGain();
+      this._portalOsc=c.createOscillator();this._portalGain=c.createGain();
       const f=c.createBiquadFilter();
-      this._portalOsc.type='sine'; this._portalOsc.frequency.value=110;
-      f.type='lowpass'; f.frequency.value=300;
-      this._portalGain.gain.value=0;
-      this._portalOsc.connect(f); f.connect(this._portalGain); this._portalGain.connect(this.master);
+      this._portalOsc.type='sine';this._portalOsc.frequency.value=110;
+      f.type='lowpass';f.frequency.value=300;this._portalGain.gain.value=0;
+      this._portalOsc.connect(f);f.connect(this._portalGain);this._portalGain.connect(this.master);
       this._portalOsc.start();
-      // LFO
-      const lfo=c.createOscillator(), lg=c.createGain();
-      lfo.frequency.value=3; lg.gain.value=20;
-      lfo.connect(lg); lg.connect(this._portalOsc.frequency); lfo.start();
+      const lfo=c.createOscillator(),lg=c.createGain();
+      lfo.frequency.value=3;lg.gain.value=20;
+      lfo.connect(lg);lg.connect(this._portalOsc.frequency);lfo.start();
     }
-    this._portalGain.gain.linearRampToValueAtTime(Math.min(v, 0.08), this.ctx.currentTime+0.1);
+    this._portalGain.gain.linearRampToValueAtTime(Math.min(v,0.08),this.ctx.currentTime+0.1);
   }
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   2. NARRATIVE ENGINE — Local narrative pool (replaces broken API)
+   2. NARRATIVE ENGINE — Local
    ═══════════════════════════════════════════════════════════════════ */
-const Narr = {
-  atk: {
-    1: [
-      "Tu golpe resuena contra el acero corrosionado del coloso.",
-      "Las chispas saltan donde tu arma impacta la armadura.",
-      "El gigante se tambalea ligeramente con el impacto.",
-      "El metal se deforma bajo la fuerza de tu ataque.",
-      "Un crujido metálico llena el aire al golpear.",
-      "Tu ataque deja una marca brillante en el casco del enemigo.",
-      "El golpe reverbera a través de la estructura del coloso.",
-      "Sientes la resistencia del blindaje ceder bajo tu puño."
-    ],
-    2: [
-      "Golpeas el reactor expuesto. El berserker aúlla.",
-      "Tus puños impactan carne y metal al mismo tiempo.",
-      "El calor del reactor quema tus manos al golpear.",
-      "Cada impacto hace temblar la estructura del coloso.",
-      "La energía del berserker parpadea con cada golpe.",
-      "Sientes cómo la armadura se resquebraja bajo tus golpes.",
-      "El núcleo nuclear emite un destello con cada impacto.",
-      "Golpear al berserker es como golpear un sol moribundo."
-    ]
-  },
-  hvy: {
-    1: [
-      "Con toda tu fuerza, tu golpe sacude al gigante hasta sus cimientos.",
-      "El impacto envía una onda de choque por las ruinas.",
-      "El coloso retrocede un paso. El suelo tiembla.",
-      "Tu ataque brutal penetra la primera capa de blindaje.",
-      "El sonido del impacto resuena por todo el sector.",
-      "Las grietas se extienden por la armadura del gigante.",
-      "Un golpe devastador que hace eco en la atmósfera.",
-      "La fuerza del impacto levanta polvo radiactivo."
-    ],
-    2: [
-      "El golpe brutal impacta el núcleo. Chispas nucleares vuelan.",
-      "Golpeas con desesperación. El berserker ruge de dolor.",
-      "Tu ataque destroza componentes del reactor expuesto.",
-      "El impacto hace vibrar el aire con una frecuencia enferma.",
-      "El berserker se tambalea, su coraza gotea metal fundido.",
-      "Golpeas el corazón de la máquina. El planeta tiembla.",
-      "El reactor parpadea peligrosamente con tu golpe brutal.",
-      "Metal fundido salpica al impactar el núcleo desnudo."
-    ]
-  },
-  dge_ok: [
-    "Te lanzas a un lado justo a tiempo. El ataque pasa rozándote.",
-    "Rodas por el suelo mientras la destrucción pasa sobre ti.",
-    "Tu reflejo te salva por centímetros del golpe mortal.",
-    "Esquivas con agilidad. El ataque impacta el suelo vacío.",
-    "Un salto lateral y el ataque del coloso solo encuentra aire.",
-    "Te deslizas bajo el golpe. El viento de la pasada te acaricia."
-  ],
-  dge_fail: [
-    "Intentas esquivar pero no eres lo suficientemente rápido.",
-    "Tu evasión es tardía. El impacto te alcanza de lleno."
-  ],
-  pry_ok: [
-    "Desvías el golpe con precisión. El boss queda expuesto.",
-    "Tu bloqueo es perfecto. El impacto revota en la armadura enemiga.",
-    "Detienes el ataque del coloso de plano. Contraatacas.",
-    "Parry perfecto. El gigante queda desbalanceado un instante.",
-    "Deflectas el ataque con tu guardia. El coloso titubea."
-  ],
-  pry_fail: [
-    "Intentas bloquear pero la fuerza te supera.",
-    "El golpe del coloso rompe tu guardia."
-  ],
-  heal: [
-    "El estímulo recorre tus venas. El dolor se desvanece.",
-    "La inyección restaura parte de tu vitalidad.",
-    "Sientes cómo la nanotecnología repara tus heridas.",
-    "El estimulante bombea adrenalina y células reparadoras."
-  ],
-  boss_atk: {
-    embestida: ["La máquina se lanza hacia ti con fuerza aplastante.", "El coloso carga como un tren blindado."],
-    'rayo laser': ["Un rayo de energía corta el aire hacia ti.", "El láser del boss ilumina las ruinas con resplandor mortal."],
-    'golpe pesado': ["El puño del gigante baja como un martillo.", "Un golpe devastador cae desde lo alto."],
-    'detonacion EMP': ["Una onda electromagnética explota desde el reactor.", "El pulso EMP hace vibrar cada célula de tu cuerpo."],
-    'rafaga triple': ["Tres ráfagas de energía cruzan el aire en sucesión.", "El berserker descarga una tormenta de disparos triples."],
-    'nova nuclear': ["El reactor nuclear explota en una nova devastadora.", "Una onda de radiación nuclear te envuelve."]
-  },
-  transition: [
-    "¡La armadura del coloso se resquebraja! El reactor nuclear queda expuesto.",
-    "La coraza externa explota en fragmentos. La fase final comienza.",
-    "¡El gigante entra en modo berserker! Su poder se multiplica."
-  ],
-  victory: [
-    "La máquina colapsa. Su reactor nuclear se apaga para siempre.",
-    "El gigante de acero cae de rodillas. Has ganado."
-  ],
-  death: [
-    "Caes entre las ruinas. El planeta sigue girando, indiferente.",
-    "La oscuridad te envuelve. Tu misión termina aquí.",
-    "El último aliento escapa de tus labios entre el metal y el polvo."
-  ],
-
-  pick(phase, type) {
-    const pool = this[type];
-    if (!pool) return '...';
-    if (Array.isArray(pool)) return pool[Math.floor(Math.random()*pool.length)];
-    const sub = pool[phase] || pool[1] || pool['1'];
-    if (sub) return sub[Math.floor(Math.random()*sub.length)];
-    return '...';
-  }
+const Narr={
+  atk:{1:["Tu golpe resuena contra el acero corrosionado del coloso.","Las chispas saltan donde tu arma impacta la armadura.","El gigante se tambalea ligeramente con el impacto.","El metal se deforma bajo la fuerza de tu ataque.","Un crujido metálico llena el aire al golpear.","Tu ataque deja una marca brillante en el casco del enemigo.","El golpe reverbera a través de la estructura del coloso.","Sientes la resistencia del blindaje ceder bajo tu puño."],2:["Golpeas el reactor expuesto. El berserker aúlla.","Tus puños impactan carne y metal al mismo tiempo.","El calor del reactor quema tus manos al golpear.","Cada impacto hace temblar la estructura del coloso.","La energía del berserker parpadea con cada golpe.","Sientes cómo la armadura se resquebraja bajo tus golpes.","El núcleo nuclear emite un destello con cada impacto.","Golpear al berserker es como golpear un sol moribundo."]},
+  hvy:{1:["Con toda tu fuerza, tu golpe sacude al gigante hasta sus cimientos.","El impacto envía una onda de choque por las ruinas.","El coloso retrocede un paso. El suelo tiembla.","Tu ataque brutal penetra la primera capa de blindaje.","El sonido del impacto resuena por todo el sector.","Las grietas se extienden por la armadura del gigante.","Un golpe devastador que hace eco en la atmósfera.","La fuerza del impacto levanta polvo radiactivo."],2:["El golpe brutal impacta el núcleo. Chispas nucleares vuelan.","Golpeas con desesperación. El berserker ruge de dolor.","Tu ataque destroza componentes del reactor expuesto.","El impacto hace vibrar el aire con una frecuencia enferma.","El berserker se tambalea, su coraza gotea metal fundido.","Golpeas el corazón de la máquina. El planeta tiembla.","El reactor parpadea peligrosamente con tu golpe brutal.","Metal fundido salpica al impactar el núcleo desnudo."]},
+  dge_ok:["Te lanzas a un lado justo a tiempo. El ataque pasa rozándote.","Rodas por el suelo mientras la destrucción pasa sobre ti.","Tu reflejo te salva por centímetros del golpe mortal.","Esquivas con agilidad. El ataque impacta el suelo vacío.","Un salto lateral y el ataque del coloso solo encuentra aire.","Te deslizas bajo el golpe. El viento de la pasada te acaricia."],
+  dge_fail:["Intentas esquivar pero no eres lo suficientemente rápido.","Tu evasión es tardía. El impacto te alcanza de lleno."],
+  pry_ok:["Desvías el golpe con precisión. El boss queda expuesto.","Tu bloqueo es perfecto. El impacto revota en la armadura enemiga.","Detienes el ataque del coloso de plano. Contraatacas.","Parry perfecto. El gigante queda desbalanceado un instante.","Deflectas el ataque con tu guardia. El coloso titubea."],
+  pry_fail:["Intentas bloquear pero la fuerza te supera.","El golpe del coloso rompe tu guardia."],
+  heal:["El estímulo recorre tus venas. El dolor se desvanece.","La inyección restaura parte de tu vitalidad.","Sientes cómo la nanotecnología repara tus heridas.","El estimulante bombea adrenalina y células reparadoras."],
+  boss_atk:{embestida:["La máquina se lanza hacia ti con fuerza aplastante.","El coloso carga como un tren blindado."],'rayo laser':["Un rayo de energía corta el aire hacia ti.","El láser del boss ilumina las ruinas con resplandor mortal."],'golpe pesado':["El puño del gigante baja como un martillo.","Un golpe devastador cae desde lo alto."],'detonacion EMP':["Una onda electromagnética explota desde el reactor.","El pulso EMP hace vibrar cada célula de tu cuerpo."],'rafaga triple':["Tres ráfagas de energía cruzan el aire en sucesión.","El berserker descarga una tormenta de disparos triples."],'nova nuclear':["El reactor nuclear explota en una nova devastadora.","Una onda de radiación nuclear te envuelve."]},
+  transition:["¡La armadura del coloso se resquebraja! El reactor nuclear queda expuesto.","La coraza externa explota en fragmentos. La fase final comienza.","¡El gigante entra en modo berserker! Su poder se multiplica."],
+  victory:["La máquina colapsa. Su reactor nuclear se apaga para siempre.","El gigante de acero cae de rodillas. Has ganado."],
+  death:["Caes entre las ruinas. El planeta sigue girando, indiferente.","La oscuridad te envuelve. Tu misión termina aquí.","El último aliento escapa de tus labios entre el metal y el polvo."],
+  pick(phase,type){const pool=this[type];if(!pool)return'...';if(Array.isArray(pool))return pool[Math.floor(Math.random()*pool.length)];const sub=pool[phase]||pool[1];if(sub)return sub[Math.floor(Math.random()*sub.length)];return'...';}
 };
 
 /* ═══════════════════════════════════════════════════════════════════
    3. CONSTANTS & STATE
    ═══════════════════════════════════════════════════════════════════ */
-const introScreen    = document.getElementById('intro-screen');
-const bossScreen     = document.getElementById('boss-screen');
-const bossContent    = document.getElementById('boss-fight-content');
-const deathScreen    = document.getElementById('death-screen');
-const hud            = document.getElementById('hud');
-const hpBar          = document.getElementById('hp-bar');
-const hpText         = document.getElementById('hp-text');
-const sprintBarEl    = document.getElementById('sprint-bar');
-const shardCountEl   = document.getElementById('shard-count');
-const bossNearbyEl   = document.getElementById('boss-nearby');
-const interactPrompt = document.getElementById('interact-prompt');
-const minimapCanvas  = document.getElementById('minimap-canvas');
-const minimapCtx     = minimapCanvas.getContext('2d');
-const canvas         = document.getElementById('three-canvas');
-const gameContainer  = document.getElementById('game-container');
+const introScreen=document.getElementById('intro-screen');
+const bossScreen=document.getElementById('boss-screen');
+const bossContent=document.getElementById('boss-fight-content');
+const deathScreen=document.getElementById('death-screen');
+const hud=document.getElementById('hud');
+const hpBar=document.getElementById('hp-bar');
+const hpText=document.getElementById('hp-text');
+const sprintBarEl=document.getElementById('sprint-bar');
+const shardCountEl=document.getElementById('shard-count');
+const bossNearbyEl=document.getElementById('boss-nearby');
+const interactPrompt=document.getElementById('interact-prompt');
+const compassEl=document.getElementById('compass');
+const crosshairEl=document.getElementById('crosshair');
+const minimapCanvas=document.getElementById('minimap-canvas');
+const minimapCtx=minimapCanvas.getContext('2d');
+const canvas=document.getElementById('three-canvas');
+const gameContainer=document.getElementById('game-container');
 
-let renderer, scene, camera, planet, player, playerMesh, playerGroup;
-let keys = {};
-let yaw = 0;
-let playerHP = 100;
-let gameActive = false;
-let nearPortal = false;
-let portalMesh = null;
+let renderer, scene, camera, player, playerMesh, playerGroup;
+let keys={};
+let playerHP=100;
+let gameActive=false;
+let nearPortal=false;
+let portalMesh=null;
+let portalWorldPos=new THREE.Vector3();
 let animId;
-let mouseDown = false;
-let lastMouseX = 0;
-
-const PLANET_R      = 12;
-const PLAYER_HEIGHT = 0.65;
-const CAM_DIST      = 4.2;
-const CAM_HEIGHT    = 1.5;
-const MOVE_SPEED    = 0.042;
-const SPRINT_MULT   = 2.2;
-let walkTime = 0;
-let sprintStamina = 100;
-let isSprinting = false;
-let footstepTimer = 0;
-let totalShards = 0;
-let collectedShards = 0;
-let shards = [];
-let shardMeshes = [];
-let isMobile = false;
-let touchMove = {active:false, dx:0, dy:0};
-let touchLook = {active:false, lastX:0};
-
-// Particle systems
+let totalShards=0, collectedShards=0;
+let shardMeshes=[];
+let isMobile=false;
+let touchMove={active:false,dx:0,dy:0};
 let portalParticles, emberParticles;
 
+// Camera — third-person orbit
+let camYaw=0, camPitch=0.75;
+const CAM_DIST=6;
+const CAM_PITCH_MIN=0.15;
+const CAM_PITCH_MAX=1.35;
+let mouseDown=false, lastMouseX=0, lastMouseY=0;
+
+// Movement
+const MOVE_SPEED=0.12;
+const SPRINT_MULT=2.0;
+const PLAYER_HEIGHT=0.65;
+let walkTime=0, sprintStamina=100, isSprinting=false, footstepTimer=0;
+let frameTime=0;
+
+// World
+const WORLD_SIZE=300;
+const WORLD_HALF=140;
+const TERRAIN_SEGS=120;
+
 /* ═══════════════════════════════════════════════════════════════════
-   4. PARTICLE SYSTEM
+   4. TERRAIN HEIGHT — shared noise function
    ═══════════════════════════════════════════════════════════════════ */
-function createParticleSystem(count, color, size, blend) {
-  const geo = new THREE.BufferGeometry();
-  const positions = new Float32Array(count * 3);
-  const velocities = []; // stored outside buffer
-  const lives = new Float32Array(count);
-  for (let i = 0; i < count; i++) {
-    positions[i*3] = 0; positions[i*3+1] = 0; positions[i*3+2] = 0;
-    velocities.push({x:0,y:0,z:0});
-    lives[i] = 0; // dead initially
+function terrainHeight(x, z) {
+  let h = 0;
+  // Large rolling hills
+  h += Math.sin(x*0.04+1.3)*3.0;
+  h += Math.sin(z*0.035+0.7)*2.5;
+  h += Math.cos(x*0.025-z*0.03+2.1)*2.0;
+  // Medium detail
+  h += Math.sin(x*0.1+z*0.08)*1.0;
+  h += Math.cos(z*0.12-x*0.06)*0.8;
+  // Small roughness
+  h += Math.sin(x*0.3+0.5)*Math.cos(z*0.25+1.2)*0.4;
+  h += Math.sin(x*0.5+z*0.4)*0.15;
+  // Crater 1
+  const d1=Math.sqrt((x-40)*(x-40)+(z-30)*(z-30));
+  if(d1<15) h-=(15-d1)*0.3;
+  // Crater 2
+  const d2=Math.sqrt((x+50)*(x+50)+(z+40)*(z+40));
+  if(d2<20) h-=(20-d2)*0.25;
+  // Crater 3
+  const d3=Math.sqrt((x-80)*(x-80)+(z-60)*(z-60));
+  if(d3<12) h-=(12-d3)*0.2;
+  // Bowl at edges — natural wall
+  const edge=Math.max(Math.abs(x),Math.abs(z));
+  if(edge>WORLD_HALF*0.7){
+    const t=(edge-WORLD_HALF*0.7)/(WORLD_HALF*0.3);
+    h+=t*t*30;
   }
-  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  const mat = new THREE.PointsMaterial({
-    color, size, transparent: true, opacity: 0.7,
-    blending: blend || THREE.AdditiveBlending, depthWrite: false
-  });
-  const points = new THREE.Points(geo, mat);
-  points._velocities = velocities;
-  points._lives = lives;
-  points._maxLife = 1;
-  return points;
-}
-
-function spawnParticle(sys, pos, vel, life) {
-  const posArr = sys.geometry.attributes.position.array;
-  const vels = sys._velocities;
-  const lives = sys._lives;
-  for (let i = 0; i < lives.length; i++) {
-    if (lives[i] <= 0) {
-      posArr[i*3]   = pos.x;
-      posArr[i*3+1] = pos.y;
-      posArr[i*3+2] = pos.z;
-      vels[i].x = vel.x; vels[i].y = vel.y; vels[i].z = vel.z;
-      lives[i] = life || 1;
-      sys._maxLife = life || 1;
-      return;
-    }
-  }
-}
-
-function updateParticles(sys, dt) {
-  const posArr = sys.geometry.attributes.position.array;
-  const vels = sys._velocities;
-  const lives = sys._lives;
-  for (let i = 0; i < lives.length; i++) {
-    if (lives[i] > 0) {
-      lives[i] -= dt;
-      posArr[i*3]   += vels[i].x * dt;
-      posArr[i*3+1] += vels[i].y * dt;
-      posArr[i*3+2] += vels[i].z * dt;
-    } else {
-      posArr[i*3] = 0; posArr[i*3+1] = -999; posArr[i*3+2] = 0;
-    }
-  }
-  sys.geometry.attributes.position.needsUpdate = true;
+  return h;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   5. BUILD SCENE
+   5. PARTICLE SYSTEM
    ═══════════════════════════════════════════════════════════════════ */
-function initThree() {
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.shadowMap.enabled = true;
-  renderer.setClearColor(0x0a0608);
+function createParticleSystem(count, color, size) {
+  const geo=new THREE.BufferGeometry();
+  const pos=new Float32Array(count*3);
+  const vels=[]; const lives=new Float32Array(count);
+  for(let i=0;i<count;i++){pos[i*3]=0;pos[i*3+1]=-999;pos[i*3+2]=0;vels.push({x:0,y:0,z:0});lives[i]=0;}
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  const mat=new THREE.PointsMaterial({color,size,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending,depthWrite:false});
+  const pts=new THREE.Points(geo,mat); pts._vels=vels; pts._lives=lives;
+  return pts;
+}
+function spawnP(sys,p,v,life){
+  const a=sys.geometry.attributes.position.array,vl=sys._vels,li=sys._lives;
+  for(let i=0;i<li.length;i++){
+    if(li[i]<=0){a[i*3]=p.x;a[i*3+1]=p.y;a[i*3+2]=p.z;vl[i].x=v.x;vl[i].y=v.y;vl[i].z=v.z;li[i]=life||1;return;}
+  }
+}
+function updateP(sys,dt){
+  const a=sys.geometry.attributes.position.array,vl=sys._vels,li=sys._lives;
+  for(let i=0;i<li.length;i++){
+    if(li[i]>0){li[i]-=dt;a[i*3]+=vl[i].x*dt;a[i*3+1]+=vl[i].y*dt;a[i*3+2]+=vl[i].z*dt;}
+    else{a[i*3+1]=-999;}
+  }
+  sys.geometry.attributes.position.needsUpdate=true;
+}
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x1a0d10, 0.018);
+/* ═══════════════════════════════════════════════════════════════════
+   6. BUILD SCENE
+   ═══════════════════════════════════════════════════════════════════ */
+function initThree(){
+  renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.shadowMap.enabled=true;
+  renderer.setClearColor(0x080406);
 
-  camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
+  scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x120810,0.008);
 
-  // Lighting — improved
-  scene.add(new THREE.AmbientLight(0x1a0510, 0.7));
+  camera=new THREE.PerspectiveCamera(65,window.innerWidth/window.innerHeight,0.1,300);
 
-  const sun = new THREE.DirectionalLight(0xff6030, 1.1);
-  sun.position.set(25, 18, 12);
-  sun.castShadow = true;
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x1a0510,0.6));
+
+  const sun=new THREE.DirectionalLight(0xff6030,0.9);
+  sun.position.set(50,80,30);sun.castShadow=true;
+  sun.shadow.mapSize.width=2048;sun.shadow.mapSize.height=2048;
+  sun.shadow.camera.near=0.5;sun.shadow.camera.far=200;
+  sun.shadow.camera.left=-80;sun.shadow.camera.right=80;
+  sun.shadow.camera.top=80;sun.shadow.camera.bottom=-80;
   scene.add(sun);
 
-  const fill = new THREE.PointLight(0x200815, 0.5, 40);
-  fill.position.set(-12, 6, -12);
-  scene.add(fill);
+  const fill=new THREE.DirectionalLight(0x200815,0.3);
+  fill.position.set(-30,20,-40);scene.add(fill);
 
-  // Colored accent lights for atmosphere
-  const redLight = new THREE.PointLight(0xff2200, 0.4, 20);
-  redLight.position.set(8, 3, 5);
-  scene.add(redLight);
+  // Accent colored lights scattered in world
+  [[30,5,20,0xff2200,0.4,18],[-20,4,50,0x0044ff,0.3,20],[60,3,-10,0xff4400,0.3,15],[-50,5,-30,0x4400ff,0.25,18],[0,4,80,0xff2200,0.3,15]].forEach(([x,y,z,c,i,d])=>{
+    const l=new THREE.PointLight(c,i,d);l.position.set(x,y,z);scene.add(l);
+  });
 
-  const blueLight = new THREE.PointLight(0x0044ff, 0.3, 25);
-  blueLight.position.set(-6, 4, 8);
-  scene.add(blueLight);
-
-  // Flickering light near portal area (will be moved)
-  window._flickerLight = new THREE.PointLight(0xe05a00, 0.6, 15);
+  // Portal area flicker light (positioned later)
+  window._flickerLight=new THREE.PointLight(0xe05a00,0.5,18);
   scene.add(window._flickerLight);
 
-  buildPlanet();
+  buildTerrain();
   buildPlayer();
   buildDecorations();
   buildPortal();
   buildCollectibles();
   buildStars();
-  buildAtmosphere();
 
-  // Particles
-  portalParticles = createParticleSystem(200, 0xff6622, 0.12, THREE.AdditiveBlending);
+  portalParticles=createParticleSystem(250,0xff6622,0.14);
   scene.add(portalParticles);
-
-  emberParticles = createParticleSystem(150, 0xff4411, 0.06, THREE.AdditiveBlending);
+  emberParticles=createParticleSystem(180,0xff4411,0.07);
   scene.add(emberParticles);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   6. PLANET — with vertex colors for terrain variety
+   7. TERRAIN — flat plane with noise displacement + vertex colors
    ═══════════════════════════════════════════════════════════════════ */
-function buildPlanet() {
-  const geo = new THREE.IcosahedronGeometry(PLANET_R, 5);
-  const pos = geo.attributes.position;
-  const colors = new Float32Array(pos.count * 3);
+function buildTerrain(){
+  const geo=new THREE.PlaneGeometry(WORLD_SIZE,WORLD_SIZE,TERRAIN_SEGS,TERRAIN_SEGS);
+  geo.rotateX(-Math.PI/2);
+  const pos=geo.attributes.position;
+  const colors=new Float32Array(pos.count*3);
 
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-    const len = Math.sqrt(x*x+y*y+z*z);
-    const nx=x/len, ny=y/len, nz=z/len;
-    const n = Math.sin(nx*8+ny*5)*0.28 + Math.sin(nz*6+nx*4)*0.18 + Math.sin(ny*9+nz*3)*0.12;
-    const r = PLANET_R + n * 0.38;
-    pos.setXYZ(i, nx*r, ny*r, nz*r);
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i), z=pos.getZ(i);
+    const h=terrainHeight(x,z);
+    pos.setY(i,h);
 
-    // Vertex color based on height
-    const t = (n + 0.5) / 1.0; // normalize roughly 0..1
-    // Deep valleys: dark red-brown, peaks: gray with red tint
-    colors[i*3]   = 0.06 + t * 0.10;  // R
-    colors[i*3+1] = 0.03 + t * 0.06;  // G
-    colors[i*3+2] = 0.02 + t * 0.04;  // B
+    // Height-based vertex color
+    const t=(h+5)/15; // normalize roughly 0..1
+    const cr=0.06+t*0.12;
+    const cg=0.03+t*0.07;
+    const cb=0.02+t*0.05;
+    colors[i*3]=cr; colors[i*3+1]=cg; colors[i*3+2]=cb;
   }
-  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
   geo.computeVertexNormals();
 
-  planet = new THREE.Mesh(geo, new THREE.MeshToonMaterial({ vertexColors: true }));
-  planet.receiveShadow = true;
-  scene.add(planet);
-}
-
-function surfacePos(theta, phi, extraH) {
-  const r = PLANET_R + 0.05 + (extraH || 0);
-  return new THREE.Vector3(
-    r * Math.sin(phi) * Math.cos(theta),
-    r * Math.cos(phi),
-    r * Math.sin(phi) * Math.sin(theta)
-  );
+  const terrain=new THREE.Mesh(geo,new THREE.MeshToonMaterial({vertexColors:true}));
+  terrain.receiveShadow=true;
+  scene.add(terrain);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   7. PLAYER
+   8. PLAYER
    ═══════════════════════════════════════════════════════════════════ */
-function buildPlayer() {
-  playerGroup = new THREE.Group();
+function buildPlayer(){
+  playerGroup=new THREE.Group();
 
-  const bodyGeo = new THREE.CylinderGeometry(0.17, 0.20, 0.55, 8);
-  playerMesh = new THREE.Mesh(bodyGeo, new THREE.MeshToonMaterial({ color: 0x1a3040 }));
-  playerMesh.position.y = 0.35;
+  // Body
+  const bodyGeo=new THREE.CylinderGeometry(0.17,0.22,0.55,8);
+  playerMesh=new THREE.Mesh(bodyGeo,new THREE.MeshToonMaterial({color:0x1a3040}));
+  playerMesh.position.y=0.35;playerMesh.castShadow=true;
   playerGroup.add(playerMesh);
 
-  const head = new THREE.Mesh(
-    new THREE.SphereGeometry(0.17, 8, 6),
-    new THREE.MeshToonMaterial({ color: 0xb07858 })
-  );
-  head.position.y = 0.78;
-  playerGroup.add(head);
+  // Head
+  const head=new THREE.Mesh(new THREE.SphereGeometry(0.17,8,6),new THREE.MeshToonMaterial({color:0xb07858}));
+  head.position.y=0.78;head.castShadow=true;playerGroup.add(head);
 
-  const visor = new THREE.Mesh(
-    new THREE.BoxGeometry(0.30, 0.09, 0.08),
-    new THREE.MeshToonMaterial({ color: 0x00e5ff, emissive: 0x00e5ff, emissiveIntensity: 0.5 })
-  );
-  visor.position.set(0, 0.81, 0.14);
-  playerGroup.add(visor);
+  // Visor
+  const visor=new THREE.Mesh(new THREE.BoxGeometry(0.30,0.09,0.08),new THREE.MeshToonMaterial({color:0x00e5ff,emissive:0x00e5ff,emissiveIntensity:0.5}));
+  visor.position.set(0,0.81,0.14);playerGroup.add(visor);
 
-  // Visor point light (player flashlight feel)
-  const visorLight = new THREE.PointLight(0x00e5ff, 0.3, 6);
-  visorLight.position.set(0, 0.81, 0.25);
-  playerGroup.add(visorLight);
-  window._visorLight = visorLight;
+  // Visor light
+  const vl=new THREE.PointLight(0x00e5ff,0.4,8);vl.position.set(0,0.85,0.3);playerGroup.add(vl);
 
-  const pack = new THREE.Mesh(
-    new THREE.BoxGeometry(0.24, 0.32, 0.13),
-    new THREE.MeshToonMaterial({ color: 0x0d1f2a })
-  );
-  pack.position.set(0, 0.40, -0.23);
-  playerGroup.add(pack);
+  // Backpack
+  const pack=new THREE.Mesh(new THREE.BoxGeometry(0.24,0.32,0.13),new THREE.MeshToonMaterial({color:0x0d1f2a}));
+  pack.position.set(0,0.40,-0.23);playerGroup.add(pack);
 
-  [-0.22, 0.22].forEach(x => {
-    const sh = new THREE.Mesh(
-      new THREE.BoxGeometry(0.10, 0.12, 0.18),
-      new THREE.MeshToonMaterial({ color: 0x0f2030 })
-    );
-    sh.position.set(x, 0.52, 0);
-    playerGroup.add(sh);
+  // Shoulder pads
+  [-0.22,0.22].forEach(x=>{
+    const sh=new THREE.Mesh(new THREE.BoxGeometry(0.10,0.12,0.18),new THREE.MeshToonMaterial({color:0x0f2030}));
+    sh.position.set(x,0.52,0);playerGroup.add(sh);
   });
 
   // Legs
-  [-0.08, 0.08].forEach(x => {
-    const leg = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.06, 0.25, 6),
-      new THREE.MeshToonMaterial({ color: 0x152530 })
-    );
-    leg.position.set(x, 0.12, 0);
-    playerGroup.add(leg);
-  });
+  const legGeo=new THREE.CylinderGeometry(0.05,0.06,0.28,6);
+  const legMat=new THREE.MeshToonMaterial({color:0x152530});
+  const legL=new THREE.Mesh(legGeo,legMat);legL.position.set(-0.09,0.12,0);playerGroup.add(legL);
+  const legR=new THREE.Mesh(legGeo,legMat);legR.position.set(0.09,0.12,0);playerGroup.add(legR);
+  playerGroup._legL=legL; playerGroup._legR=legR;
 
-  player = playerGroup;
-  player.position.set(0, PLANET_R + PLAYER_HEIGHT, 0);
-  scene.add(player);
+  // Spawn
+  const sy=terrainHeight(0,0)+PLAYER_HEIGHT;
+  playerGroup.position.set(0,sy,0);
+  scene.add(playerGroup);
+  player=playerGroup;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   8. DECORATIONS — more varied ruins, glowing elements
+   9. DECORATIONS
    ═══════════════════════════════════════════════════════════════════ */
-function buildDecorations() {
-  // Large ruins — varied shapes and colors
-  const ruinData = [
-    [0.5,1.2,[1.2,2.5,0.3], 0x1e1208],
-    [1.1,1.4,[0.3,1.8,1.0], 0x1a1008],
-    [2.0,1.0,[2.0,1.2,0.25], 0x221508],
-    [-0.8,1.5,[0.8,3.0,0.8], 0x18100a],
-    [3.5,1.3,[1.5,0.8,0.3], 0x1c0e06],
-    [-1.5,0.8,[0.25,2.2,1.2], 0x1a0f08],
-    [2.8,1.6,[1.0,1.5,0.3], 0x201208],
-    [0.2,0.7,[2.2,0.4,1.5], 0x1e140a],
-    [4.2,1.1,[0.3,1.2,2.0], 0x1a100a],
-    [5.0,0.9,[1.8,2.0,0.3], 0x1c0c08],
-    [5.5,1.7,[0.4,1.0,0.4], 0x201008],
-    [-2.2,1.1,[1.4,1.6,1.4], 0x181008],
-    [3.0,0.6,[0.3,2.8,0.3], 0x1e0e06],
-    [-0.3,2.0,[0.8,0.8,0.8], 0x221208],
-    [1.8,2.2,[0.3,3.5,0.3], 0x1a0c08],
-    [4.8,1.5,[1.0,1.0,1.0], 0x201008]
+function buildDecorations(){
+  // Ruins — placed at specific world positions
+  const ruinData=[
+    [-30,-20,[1.2,2.5,0.3],0x1e1208],[15,25,[0.3,1.8,1.0],0x1a1008],
+    [50,10,[2.0,1.2,0.25],0x221508],[-20,40,[0.8,3.0,0.8],0x18100a],
+    [70,-15,[1.5,0.8,0.3],0x1c0e06],[-60,-50,[0.25,2.2,1.2],0x1a0f08],
+    [30,60,[1.0,1.5,0.3],0x201208],[10,-45,[2.2,0.4,1.5],0x1e140a],
+    [80,45,[0.3,1.2,2.0],0x1a100a],[55,-55,[1.8,2.0,0.3],0x1c0c08],
+    [-40,70,[0.4,1.0,0.4],0x201008],[-70,20,[1.4,1.6,1.4],0x181008],
+    [25,80,[0.3,2.8,0.3],0x1e0e06],[-10,-70,[0.8,0.8,0.8],0x221208],
+    [90,25,[0.3,3.5,0.3],0x1a0c08],[40,-35,[1.0,1.0,1.0],0x201008],
+    [-80,-20,[1.6,2.2,0.3],0x1c0a06],[65,70,[0.5,1.8,0.5],0x1e1008]
   ];
-
-  ruinData.forEach(([t,p,s,c]) => {
-    const m = new THREE.Mesh(
-      new THREE.BoxGeometry(s[0],s[1],s[2]),
-      new THREE.MeshToonMaterial({ color: c })
-    );
-    const pos = surfacePos(t, p, s[1]*0.5);
-    m.position.copy(pos);
-    m.lookAt(0,0,0); m.rotateX(Math.PI/2);
+  ruinData.forEach(([wx,wz,s,c])=>{
+    const m=new THREE.Mesh(new THREE.BoxGeometry(s[0],s[1],s[2]),new THREE.MeshToonMaterial({color:c}));
+    const h=terrainHeight(wx,wz);
+    m.position.set(wx,h+s[1]*0.5,wz);
+    m.rotation.y=Math.random()*Math.PI*2;
+    m.castShadow=true;m.receiveShadow=true;
     scene.add(m);
   });
 
-  // Glowing ruin markers (small emissive cubes on some ruins)
-  const glowPositions = [[0.5,1.2,1.5],[2.0,1.0,0.8],[-0.8,1.5,3.2],[5.0,0.9,2.2],[-2.2,1.1,1.8]];
-  glowPositions.forEach(([t,p,h]) => {
-    const glow = new THREE.Mesh(
-      new THREE.BoxGeometry(0.08, 0.08, 0.08),
-      new THREE.MeshToonMaterial({ color: 0xff3300, emissive: 0xff3300, emissiveIntensity: 0.6 })
-    );
-    const pos = surfacePos(t, p, h);
-    glow.position.copy(pos);
-    scene.add(glow);
-    // Small point light
-    const light = new THREE.PointLight(0xff2200, 0.3, 5);
-    light.position.copy(pos);
-    scene.add(light);
+  // Glowing ruin markers
+  [[-30,-20,2.8],[50,10,1.4],[-60,-50,2.5],[90,25,3.8],[65,70,2.0]].forEach(([wx,wz,oh])=>{
+    const h=terrainHeight(wx,wz);
+    const g=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.08,0.08),new THREE.MeshToonMaterial({color:0xff3300,emissive:0xff3300,emissiveIntensity:0.6}));
+    g.position.set(wx,h+oh,wz);scene.add(g);
+    const l=new THREE.PointLight(0xff2200,0.3,6);l.position.set(wx,h+oh,wz);scene.add(l);
   });
 
-  // Dead trees — more variety
-  for (let i = 0; i < 30; i++) {
-    const t = Math.random()*Math.PI*2;
-    const p = 0.4 + Math.random()*2.2;
-    const h = 0.4 + Math.random()*1.1;
-    const trunk = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.03, 0.06+Math.random()*0.03, h, 5),
-      new THREE.MeshToonMaterial({ color: 0x1a0d06 + Math.floor(Math.random()*0x050505) })
+  // Dead trees
+  for(let i=0;i<45;i++){
+    const wx=(Math.random()-0.5)*WORLD_SIZE*0.85;
+    const wz=(Math.random()-0.5)*WORLD_SIZE*0.85;
+    if(Math.abs(wx)>WORLD_HALF*0.85||Math.abs(wz)>WORLD_HALF*0.85) continue;
+    const h=0.4+Math.random()*1.1;
+    const th=terrainHeight(wx,wz);
+    const trunk=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.03,0.06+Math.random()*0.03,h,5),
+      new THREE.MeshToonMaterial({color:0x1a0d06})
     );
-    const pos = surfacePos(t, p, h*0.5);
-    trunk.position.copy(pos);
-    trunk.lookAt(0,0,0); trunk.rotateX(Math.PI/2);
-    scene.add(trunk);
-    for (let b = 0; b < 2+Math.floor(Math.random()*3); b++) {
-      const br = new THREE.Mesh(
+    trunk.position.set(wx,th+h*0.5,wz);trunk.castShadow=true;scene.add(trunk);
+    for(let b=0;b<2+Math.floor(Math.random()*3);b++){
+      const br=new THREE.Mesh(
         new THREE.CylinderGeometry(0.015,0.025,0.15+Math.random()*0.25,4),
-        new THREE.MeshToonMaterial({ color: 0x1a0d06 })
+        new THREE.MeshToonMaterial({color:0x1a0d06})
       );
-      const bpos = pos.clone().add(
-        new THREE.Vector3((Math.random()-.5)*.6,(Math.random()-.5)*.6,(Math.random()-.5)*.6).multiplyScalar(1.1)
-      );
-      br.position.copy(bpos);
-      br.lookAt(0,0,0); br.rotateX(Math.PI/2);
+      br.position.set(wx+(Math.random()-0.5)*0.6, th+h*0.6+Math.random()*0.3, wz+(Math.random()-0.5)*0.6);
+      br.rotation.set((Math.random()-0.5)*1.2,Math.random()*Math.PI,(Math.random()-0.5)*1.2);
       scene.add(br);
     }
   }
 
-  // Rocks — more and varied
-  for (let i = 0; i < 25; i++) {
-    const r = new THREE.Mesh(
-      new THREE.DodecahedronGeometry(0.1+Math.random()*0.3, 0),
-      new THREE.MeshToonMaterial({ color: 0x1a1206 + Math.floor(Math.random()*0x080808) })
+  // Rocks
+  for(let i=0;i<40;i++){
+    const wx=(Math.random()-0.5)*WORLD_SIZE*0.8;
+    const wz=(Math.random()-0.5)*WORLD_SIZE*0.8;
+    if(Math.abs(wx)>WORLD_HALF*0.8||Math.abs(wz)>WORLD_HALF*0.8) continue;
+    const rh=terrainHeight(wx,wz);
+    const r=new THREE.Mesh(
+      new THREE.DodecahedronGeometry(0.1+Math.random()*0.35,0),
+      new THREE.MeshToonMaterial({color:0x1a1206})
     );
-    r.position.copy(surfacePos(Math.random()*Math.PI*2, 0.4+Math.random()*2.2, 0.06+Math.random()*0.08));
-    scene.add(r);
+    r.position.set(wx,rh+0.08,wz);r.rotation.set(Math.random(),Math.random(),Math.random());
+    r.castShadow=true;scene.add(r);
   }
 
-  // Debris — small scattered fragments
-  for (let i = 0; i < 40; i++) {
-    const d = new THREE.Mesh(
-      new THREE.BoxGeometry(0.05+Math.random()*0.12, 0.03+Math.random()*0.06, 0.05+Math.random()*0.12),
-      new THREE.MeshToonMaterial({ color: 0x15100a })
+  // Debris fragments
+  for(let i=0;i<60;i++){
+    const wx=(Math.random()-0.5)*WORLD_SIZE*0.9;
+    const wz=(Math.random()-0.5)*WORLD_SIZE*0.9;
+    if(Math.abs(wx)>WORLD_HALF*0.85||Math.abs(wz)>WORLD_HALF*0.85) continue;
+    const dh=terrainHeight(wx,wz);
+    const d=new THREE.Mesh(
+      new THREE.BoxGeometry(0.05+Math.random()*0.15,0.03+Math.random()*0.06,0.05+Math.random()*0.15),
+      new THREE.MeshToonMaterial({color:0x15100a})
     );
-    d.position.copy(surfacePos(Math.random()*Math.PI*2, 0.3+Math.random()*2.4, 0.02));
-    d.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+    d.position.set(wx,dh+0.02,wz);d.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
     scene.add(d);
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   9. PORTAL
+   10. PORTAL
    ═══════════════════════════════════════════════════════════════════ */
-function buildPortal() {
-  const group = new THREE.Group();
-  const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.85, 0.10, 10, 32),
-    new THREE.MeshToonMaterial({ color: 0xe05a00, emissive: 0x803000, emissiveIntensity: 0.8 })
+function buildPortal(){
+  const group=new THREE.Group();
+
+  // Outer ring
+  const ring=new THREE.Mesh(
+    new THREE.TorusGeometry(1.0,0.12,10,32),
+    new THREE.MeshToonMaterial({color:0xe05a00,emissive:0x803000,emissiveIntensity:0.8})
   );
   group.add(ring);
 
-  // Inner glow disc
-  const inner = new THREE.Mesh(
-    new THREE.CircleGeometry(0.75, 32),
-    new THREE.MeshToonMaterial({ color: 0x1a0500, emissive: 0x501000, emissiveIntensity: 0.6, side: THREE.DoubleSide })
+  // Inner disc
+  const inner=new THREE.Mesh(
+    new THREE.CircleGeometry(0.88,32),
+    new THREE.MeshToonMaterial({color:0x1a0500,emissive:0x501000,emissiveIntensity:0.6,side:THREE.DoubleSide})
   );
   group.add(inner);
 
-  // Second ring (inner)
-  const ring2 = new THREE.Mesh(
-    new THREE.TorusGeometry(0.55, 0.04, 8, 24),
-    new THREE.MeshToonMaterial({ color: 0xff7700, emissive: 0xff4400, emissiveIntensity: 0.5 })
+  // Second ring
+  const ring2=new THREE.Mesh(
+    new THREE.TorusGeometry(0.65,0.05,8,24),
+    new THREE.MeshToonMaterial({color:0xff7700,emissive:0xff4400,emissiveIntensity:0.5})
   );
-  ring2.rotation.z = 0.3;
-  group.add(ring2);
+  ring2.rotation.x=0.3;group.add(ring2);
 
   // Pillars
-  [-0.95, 0.95].forEach(x => {
-    const pil = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.07, 0.10, 1.9, 6),
-      new THREE.MeshToonMaterial({ color: 0x2a1008 })
-    );
-    pil.position.set(x, -0.05, 0);
-    group.add(pil);
-    // Pillar top glow
-    const top = new THREE.Mesh(
-      new THREE.SphereGeometry(0.09, 6, 4),
-      new THREE.MeshToonMaterial({ color: 0xe05a00, emissive: 0xe05a00, emissiveIntensity: 0.4 })
-    );
-    top.position.set(x, 0.9, 0);
-    group.add(top);
+  [-1.2,1.2].forEach(x=>{
+    const pil=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.12,2.2,6),new THREE.MeshToonMaterial({color:0x2a1008}));
+    pil.position.set(x,0,0);pil.castShadow=true;group.add(pil);
+    const top=new THREE.Mesh(new THREE.SphereGeometry(0.1,6,4),new THREE.MeshToonMaterial({color:0xe05a00,emissive:0xe05a00,emissiveIntensity:0.4}));
+    top.position.set(x,1.1,0);group.add(top);
   });
-
-  const pos = surfacePos(Math.PI, 1.35, 0.85);
-  group.position.copy(pos);
-  group.lookAt(0,0,0); group.rotateX(Math.PI/2);
 
   // Portal light
-  const portalLight = new THREE.PointLight(0xe05a00, 0.8, 12);
-  portalLight.position.set(0, 0, 0.5);
-  group.add(portalLight);
+  const pl=new THREE.PointLight(0xe05a00,1.0,16);
+  pl.position.set(0,0,0.6);group.add(pl);
 
+  // Position on terrain
+  const px=85,pz=65;
+  const ph=terrainHeight(px,pz);
+  group.position.set(px,ph+1.3,pz);
   scene.add(group);
-  portalMesh = group;
+  portalMesh=group;
+  portalWorldPos.set(px,ph,pz);
 
-  // Position flicker light near portal
-  window._flickerLight.position.copy(pos).multiplyScalar(1.15);
+  // Flicker light near portal
+  window._flickerLight.position.set(px,ph+3,pz);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   10. COLLECTIBLES — Energy Shards
+   11. COLLECTIBLES
    ═══════════════════════════════════════════════════════════════════ */
-function buildCollectibles() {
-  const shardPositions = [
-    [0.8, 0.9], [1.5, 1.8], [2.5, 0.6], [3.0, 1.4], [4.0, 0.8],
-    [-0.5, 1.2], [-1.0, 2.0], [-2.0, 0.7], [0.3, 2.3], [1.0, 0.5],
-    [3.8, 1.8], [5.2, 1.2], [4.5, 0.4], [-1.5, 1.5], [2.2, 2.0],
-    [0.0, 1.6], [5.8, 0.9], [3.3, 2.2], [-2.5, 1.3], [1.7, 0.3]
+function buildCollectibles(){
+  const positions=[
+    [5,5],[15,-10],[-12,18],[25,30],[-25,-15],[40,5],
+    [-35,25],[50,-20],[10,45],[-15,-35],[60,20],[-45,-45],
+    [30,-40],[-20,55],[70,10],[20,-60],[55,40],[-60,10],
+    [0,70],[75,50],[35,-55],[-50,-25],[80,-10],[15,65]
   ];
 
-  totalShards = shardPositions.length;
-  shardCountEl.textContent = 'FRAGMENTOS: 0 / ' + totalShards;
+  totalShards=positions.length;
+  shardCountEl.textContent='FRAGMENTOS: 0 / '+totalShards;
 
-  shardPositions.forEach(([t, p]) => {
-    const group = new THREE.Group();
-    // Crystal shape — octahedron
-    const crystal = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.12, 0),
-      new THREE.MeshToonMaterial({
-        color: 0x00e5ff, emissive: 0x00e5ff, emissiveIntensity: 0.6,
-        transparent: true, opacity: 0.85
-      })
+  positions.forEach(([wx,wz])=>{
+    const group=new THREE.Group();
+    const crystal=new THREE.Mesh(
+      new THREE.OctahedronGeometry(0.14,0),
+      new THREE.MeshToonMaterial({color:0x00e5ff,emissive:0x00e5ff,emissiveIntensity:0.6,transparent:true,opacity:0.85})
     );
     group.add(crystal);
-
-    // Glow
-    const glow = new THREE.Mesh(
-      new THREE.SphereGeometry(0.2, 8, 6),
-      new THREE.MeshToonMaterial({
-        color: 0x00aaff, emissive: 0x0066ff, emissiveIntensity: 0.3,
-        transparent: true, opacity: 0.2
-      })
+    const glow=new THREE.Mesh(
+      new THREE.SphereGeometry(0.25,8,6),
+      new THREE.MeshToonMaterial({color:0x00aaff,emissive:0x0066ff,emissiveIntensity:0.3,transparent:true,opacity:0.2})
     );
     group.add(glow);
-
-    const pos = surfacePos(t, p, 0.5);
-    group.position.copy(pos);
-    group.lookAt(0,0,0); group.rotateX(Math.PI/2);
-
+    const sh=terrainHeight(wx,wz);
+    group.position.set(wx,sh+0.6,wz);
     scene.add(group);
-    shardMeshes.push({ mesh: group, collected: false, theta: t, phi: p });
+    shardMeshes.push({mesh:group,collected:false,wx:wx,wz:wz});
   });
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   11. STARS — better, varying size
+   12. STARS — hemisphere sky
    ═══════════════════════════════════════════════════════════════════ */
-function buildStars() {
-  const verts = [], colors = [];
-  for (let i = 0; i < 1500; i++) {
-    const t = Math.random()*Math.PI*2, p = Math.acos(2*Math.random()-1);
-    const r = 70 + Math.random()*25;
-    verts.push(r*Math.sin(p)*Math.cos(t), r*Math.cos(p), r*Math.sin(p)*Math.sin(t));
-    const bright = 0.3 + Math.random()*0.7;
-    // Warm star colors
-    const cr = bright * (0.7 + Math.random()*0.3);
-    const cg = bright * (0.5 + Math.random()*0.3);
-    const cb = bright * (0.3 + Math.random()*0.3);
-    colors.push(cr, cg, cb);
+function buildStars(){
+  const verts=[],colors=[];
+  for(let i=0;i<2000;i++){
+    const theta=Math.random()*Math.PI*2;
+    const phi=Math.random()*Math.PI*0.42;
+    const r=200+Math.random()*30;
+    verts.push(r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
+    const b=0.3+Math.random()*0.7;
+    colors.push(b*(0.7+Math.random()*0.3),b*(0.5+Math.random()*0.3),b*(0.3+Math.random()*0.3));
   }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
-  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
-    size: 0.18, vertexColors: true, transparent: true, opacity: 0.8
-  })));
-
-  // Brighter stars layer
-  const verts2 = [];
-  for (let i = 0; i < 80; i++) {
-    const t = Math.random()*Math.PI*2, p = Math.acos(2*Math.random()-1);
-    const r = 75 + Math.random()*15;
-    verts2.push(r*Math.sin(p)*Math.cos(t), r*Math.cos(p), r*Math.sin(p)*Math.sin(t));
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:0.2,vertexColors:true,transparent:true,opacity:0.8})));
+  // Bright layer
+  const v2=[];
+  for(let i=0;i<100;i++){
+    const theta=Math.random()*Math.PI*2;
+    const phi=Math.random()*Math.PI*0.35;
+    const r=210+Math.random()*15;
+    v2.push(r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
   }
-  const geo2 = new THREE.BufferGeometry();
-  geo2.setAttribute('position', new THREE.Float32BufferAttribute(verts2, 3));
-  scene.add(new THREE.Points(geo2, new THREE.PointsMaterial({
-    color: 0xffccaa, size: 0.35, transparent: true, opacity: 0.9
-  })));
+  const g2=new THREE.BufferGeometry();
+  g2.setAttribute('position',new THREE.Float32BufferAttribute(v2,3));
+  scene.add(new THREE.Points(g2,new THREE.PointsMaterial({color:0xffccaa,size:0.4,transparent:true,opacity:0.9})));
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   12. ATMOSPHERE — subtle planet glow
+   13. MINIMAP — top-down flat projection
    ═══════════════════════════════════════════════════════════════════ */
-function buildAtmosphere() {
-  const atmo = new THREE.Mesh(
-    new THREE.SphereGeometry(PLANET_R * 1.06, 32, 24),
-    new THREE.MeshBasicMaterial({
-      color: 0x331100, transparent: true, opacity: 0.06,
-      side: THREE.BackSide
-    })
-  );
-  scene.add(atmo);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   13. MINIMAP
-   ═══════════════════════════════════════════════════════════════════ */
-function drawMinimap() {
-  const w = 110, h = 110, cx = w/2, cy = h/2, r = 50;
-  minimapCtx.clearRect(0, 0, w, h);
-
-  // Background circle
+function drawMinimap(){
+  const w=120,h=120,cx=w/2,cy=h/2,r=55;
+  minimapCtx.clearRect(0,0,w,h);
   minimapCtx.save();
-  minimapCtx.beginPath();
-  minimapCtx.arc(cx, cy, r, 0, Math.PI*2);
-  minimapCtx.clip();
+  minimapCtx.beginPath();minimapCtx.arc(cx,cy,r,0,Math.PI*2);minimapCtx.clip();
+  minimapCtx.fillStyle='rgba(10,6,8,0.9)';minimapCtx.fillRect(0,0,w,h);
 
-  minimapCtx.fillStyle = 'rgba(10,6,8,0.85)';
-  minimapCtx.fillRect(0, 0, w, h);
+  // Grid
+  minimapCtx.strokeStyle='rgba(255,255,255,0.04)';minimapCtx.lineWidth=0.5;
+  for(let i=-r;i<=r;i+=15){minimapCtx.beginPath();minimapCtx.moveTo(cx+i,0);minimapCtx.lineTo(cx+i,h);minimapCtx.stroke();minimapCtx.beginPath();minimapCtx.moveTo(0,cy+i);minimapCtx.lineTo(w,cy+i);minimapCtx.stroke();}
 
-  // Grid lines
-  minimapCtx.strokeStyle = 'rgba(255,255,255,0.05)';
-  minimapCtx.lineWidth = 0.5;
-  for (let i = -r; i <= r; i += 12) {
-    minimapCtx.beginPath();
-    minimapCtx.moveTo(cx+i, 0); minimapCtx.lineTo(cx+i, h);
-    minimapCtx.stroke();
-    minimapCtx.beginPath();
-    minimapCtx.moveTo(0, cy+i); minimapCtx.lineTo(w, cy+i);
-    minimapCtx.stroke();
-  }
+  const scale=1.2;
+  const px=player.position.x, pz=player.position.z;
 
-  // Project 3D positions to 2D local coordinates
-  const pUp = player.position.clone().normalize();
-  const scale = 4.5; // world units to pixels
-
-  // Helper: project world pos to minimap 2D
-  function toMap(worldPos) {
-    const toP = worldPos.clone().sub(player.position);
-    // Create local frame
-    const right = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw)).cross(pUp).normalize();
-    const fwd = right.clone().cross(pUp).normalize().negate();
-    const lx = toP.dot(right) * scale;
-    const ly = -toP.dot(fwd) * scale;
-    return { x: cx + lx, y: cy + ly };
-  }
-
-  // Draw shards
-  shardMeshes.forEach(s => {
-    if (s.collected) return;
-    const sp = surfacePos(s.theta, s.phi, 0);
-    const mp = toMap(sp);
-    const dx = mp.x - cx, dy = mp.y - cy;
-    if (dx*dx + dy*dy < r*r) {
-      minimapCtx.fillStyle = '#00e5ff';
-      minimapCtx.fillRect(mp.x-2, mp.y-2, 4, 4);
+  // Shards
+  shardMeshes.forEach(s=>{
+    if(s.collected)return;
+    const sx=cx+(s.wx-px)*scale, sy=cy+(s.wz-pz)*scale;
+    if((sx-cx)*(sx-cx)+(sy-cy)*(sy-cy)<r*r){
+      minimapCtx.fillStyle='#00e5ff';minimapCtx.fillRect(sx-1.5,sy-1.5,3,3);
     }
   });
 
-  // Draw portal
-  const pp = toMap(portalMesh.position);
-  const pdx = pp.x - cx, pdy = pp.y - cy;
-  if (pdx*pdx + pdy*pdy < r*r) {
-    minimapCtx.fillStyle = '#e05a00';
-    minimapCtx.beginPath();
-    minimapCtx.arc(pp.x, pp.y, 4, 0, Math.PI*2);
-    minimapCtx.fill();
-    // Pulsing ring
-    minimapCtx.strokeStyle = 'rgba(224,90,0,0.5)';
-    minimapCtx.lineWidth = 1;
-    const pulseR = 4 + Math.sin(Date.now()*0.005)*2;
-    minimapCtx.beginPath();
-    minimapCtx.arc(pp.x, pp.y, pulseR, 0, Math.PI*2);
-    minimapCtx.stroke();
+  // Portal
+  const ppx=cx+(portalWorldPos.x-px)*scale, ppy=cy+(portalWorldPos.z-pz)*scale;
+  if((ppx-cx)*(ppx-cx)+(ppy-cy)*(ppy-cy)<r*r){
+    minimapCtx.fillStyle='#e05a00';minimapCtx.beginPath();minimapCtx.arc(ppx,ppy,4,0,Math.PI*2);minimapCtx.fill();
+    const pr=4+Math.sin(Date.now()*0.005)*2;
+    minimapCtx.strokeStyle='rgba(224,90,0,0.5)';minimapCtx.lineWidth=1;
+    minimapCtx.beginPath();minimapCtx.arc(ppx,ppy,pr,0,Math.PI*2);minimapCtx.stroke();
   }
 
-  // Player arrow
-  minimapCtx.save();
-  minimapCtx.translate(cx, cy);
-  minimapCtx.fillStyle = '#00ff88';
-  minimapCtx.beginPath();
-  minimapCtx.moveTo(0, -6);
-  minimapCtx.lineTo(-4, 4);
-  minimapCtx.lineTo(4, 4);
-  minimapCtx.closePath();
-  minimapCtx.fill();
+  // Player arrow (rotated by camera yaw)
+  minimapCtx.save();minimapCtx.translate(cx,cy);minimapCtx.rotate(-camYaw+Math.PI);
+  minimapCtx.fillStyle='#00ff88';minimapCtx.beginPath();
+  minimapCtx.moveTo(0,-7);minimapCtx.lineTo(-4,5);minimapCtx.lineTo(4,5);minimapCtx.closePath();minimapCtx.fill();
   minimapCtx.restore();
 
   minimapCtx.restore();
-
   // Border
-  minimapCtx.strokeStyle = 'rgba(255,255,255,0.1)';
-  minimapCtx.lineWidth = 1;
-  minimapCtx.beginPath();
-  minimapCtx.arc(cx, cy, r, 0, Math.PI*2);
-  minimapCtx.stroke();
-
-  // Compass direction
-  minimapCtx.fillStyle = '#555';
-  minimapCtx.font = '8px Courier New';
-  minimapCtx.textAlign = 'center';
-  minimapCtx.fillText('N', cx, cy - r + 10);
+  minimapCtx.strokeStyle='rgba(255,255,255,0.08)';minimapCtx.lineWidth=1;
+  minimapCtx.beginPath();minimapCtx.arc(cx,cy,r,0,Math.PI*2);minimapCtx.stroke();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   14. MOVEMENT & PHYSICS — with sprint
+   14. COMPASS
    ═══════════════════════════════════════════════════════════════════ */
-function getUp()  { return player.position.clone().normalize(); }
-
-function getFwd() {
-  const up = getUp();
-  const wf = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw));
-  const right = wf.cross(up).normalize();
-  return right.cross(up).normalize().negate();
+function updateCompass(){
+  // Convert yaw to compass direction
+  const deg=((camYaw*180/Math.PI)%360+360)%360;
+  const dirs=['N','NE','E','SE','S','SW','W','NW'];
+  const idx=Math.round(deg/45)%8;
+  compassEl.textContent=dirs[idx]+' '+Math.round(deg)+'°';
 }
 
-function getRight() {
-  const up = getUp();
-  return new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw)).cross(up).normalize();
+/* ═══════════════════════════════════════════════════════════════════
+   15. MOVEMENT & CAMERA — WASD third-person style
+   ═══════════════════════════════════════════════════════════════════ */
+function getForward(){
+  return new THREE.Vector3(-Math.sin(camYaw),0,-Math.cos(camYaw)).normalize();
+}
+function getRight(){
+  return new THREE.Vector3(Math.cos(camYaw),0,-Math.sin(camYaw)).normalize();
 }
 
-function alignPlayer() {
-  const up = getUp(), fwd = getFwd();
-  const right = fwd.clone().cross(up).normalize();
-  const mat = new THREE.Matrix4().makeBasis(right, up, fwd.clone().negate());
-  player.quaternion.setFromRotationMatrix(mat);
+function screenShake(){
+  gameContainer.classList.add('shake');setTimeout(()=>gameContainer.classList.remove('shake'),120);
 }
 
-function screenShake() {
-  gameContainer.classList.add('shake');
-  setTimeout(() => gameContainer.classList.remove('shake'), 150);
-}
-
-let frameTime = 0;
-function update() {
-  if (!gameActive) return;
-  const dt = 0.016; // ~60fps normalized
-  frameTime += dt;
-  let moved = false;
+function update(){
+  if(!gameActive)return;
+  const dt=0.016;
+  frameTime+=dt;
+  let moved=false;
 
   // Sprint
-  const sprintKey = keys['ShiftLeft'] || keys['ShiftRight'];
-  if (sprintKey && sprintStamina > 0 && (keys['KeyW']||keys['ArrowUp']||keys['KeyS']||keys['ArrowDown']||keys['KeyA']||keys['ArrowLeft']||keys['KeyD']||keys['ArrowRight'] || touchMove.active)) {
-    isSprinting = true;
-    sprintStamina = Math.max(0, sprintStamina - 0.5);
-  } else {
-    isSprinting = false;
-    sprintStamina = Math.min(100, sprintStamina + 0.2);
-  }
+  const sprintKey=keys['ShiftLeft']||keys['ShiftRight']||touchSprinting;
+  const anyMove=keys['KeyW']||keys['ArrowUp']||keys['KeyS']||keys['ArrowDown']||keys['KeyA']||keys['ArrowLeft']||keys['KeyD']||keys['ArrowRight']||touchMove.active;
+  if(sprintKey&&sprintStamina>0&&anyMove){isSprinting=true;sprintStamina=Math.max(0,sprintStamina-0.5);}
+  else{isSprinting=false;sprintStamina=Math.min(100,sprintStamina+0.2);}
 
-  const speed = MOVE_SPEED * (isSprinting ? SPRINT_MULT : 1);
+  const speed=MOVE_SPEED*(isSprinting?SPRINT_MULT:1);
+  const fwd=getForward(), right=getRight();
 
   // Touch movement
-  if (touchMove.active) {
-    player.position.addScaledVector(getFwd(), -touchMove.dy * speed);
-    player.position.addScaledVector(getRight(), touchMove.dx * speed);
-    moved = true;
+  if(touchMove.active){
+    player.position.addScaledVector(fwd,-touchMove.dy*speed);
+    player.position.addScaledVector(right,touchMove.dx*speed);
+    moved=true;
   }
 
-  if (keys['KeyW']||keys['ArrowUp'])    { player.position.addScaledVector(getFwd(), speed);    moved=true; }
-  if (keys['KeyS']||keys['ArrowDown'])  { player.position.addScaledVector(getFwd(),-speed);    moved=true; }
-  if (keys['KeyA']||keys['ArrowLeft'])  { player.position.addScaledVector(getRight(),-speed);  yaw-=0.025; moved=true; }
-  if (keys['KeyD']||keys['ArrowRight']) { player.position.addScaledVector(getRight(), speed);  yaw+=0.025; moved=true; }
+  // Keyboard WASD — relative to camera direction
+  if(keys['KeyW']||keys['ArrowUp'])   {player.position.addScaledVector(fwd,speed);moved=true;}
+  if(keys['KeyS']||keys['ArrowDown']) {player.position.addScaledVector(fwd,-speed);moved=true;}
+  if(keys['KeyA']||keys['ArrowLeft']) {player.position.addScaledVector(right,-speed);moved=true;}
+  if(keys['KeyD']||keys['ArrowRight']){player.position.addScaledVector(right,speed);moved=true;}
 
-  player.position.normalize().multiplyScalar(PLANET_R + PLAYER_HEIGHT);
-  alignPlayer();
+  // Clamp to world bounds
+  player.position.x=Math.max(-WORLD_HALF*0.92,Math.min(WORLD_HALF*0.92,player.position.x));
+  player.position.z=Math.max(-WORLD_HALF*0.92,Math.min(WORLD_HALF*0.92,player.position.z));
+
+  // Snap to terrain height
+  const th=terrainHeight(player.position.x,player.position.z);
+  const targetY=th+PLAYER_HEIGHT;
+  player.position.y+=(targetY-player.position.y)*0.2;
+
+  // Rotate player to face movement direction (or camera forward if idle)
+  if(moved){
+    const moveDir=new THREE.Vector3();
+    if(keys['KeyW']||keys['ArrowUp']||touchMove.active) moveDir.add(fwd);
+    if(keys['KeyS']||keys['ArrowDown']) moveDir.sub(fwd);
+    if(keys['KeyA']||keys['ArrowLeft']) moveDir.sub(right);
+    if(keys['KeyD']||keys['ArrowRight']) moveDir.add(right);
+    if(touchMove.active){
+      moveDir.addScaledVector(fwd,-touchMove.dy);
+      moveDir.addScaledVector(right,touchMove.dx);
+    }
+    if(moveDir.length()>0.01){
+      const targetAngle=Math.atan2(moveDir.x,moveDir.z);
+      // Smooth rotation
+      let diff=targetAngle-player.rotation.y;
+      while(diff>Math.PI)diff-=Math.PI*2;
+      while(diff<-Math.PI)diff+=Math.PI*2;
+      player.rotation.y+=diff*0.12;
+    }
+  }
 
   // Walk animation
-  if (moved) {
-    const walkSpeed = isSprinting ? 0.28 : 0.18;
-    walkTime += walkSpeed;
-    playerMesh.position.y = 0.35 + Math.sin(walkTime*2)*0.05;
-    // Leg animation
-    if (playerGroup.children[7]) playerGroup.children[7].position.y = 0.12 + Math.sin(walkTime*2)*0.04;
-    if (playerGroup.children[8]) playerGroup.children[8].position.y = 0.12 + Math.sin(walkTime*2 + Math.PI)*0.04;
+  if(moved){
+    walkTime+=(isSprinting?0.3:0.2);
+    playerMesh.position.y=0.35+Math.sin(walkTime*2)*0.05;
+    if(playerGroup._legL) playerGroup._legL.position.y=0.12+Math.sin(walkTime*2)*0.04;
+    if(playerGroup._legR) playerGroup._legR.position.y=0.12+Math.sin(walkTime*2+Math.PI)*0.04;
 
-    // Footstep sounds
-    footstepTimer += dt;
-    const stepInterval = isSprinting ? 0.22 : 0.35;
-    if (footstepTimer >= stepInterval) {
-      Audio.playFootstep();
-      footstepTimer = 0;
-    }
-  } else {
-    footstepTimer = 0.3; // ready for next step
-  }
+    footstepTimer+=dt;
+    if(footstepTimer>=(isSprinting?0.2:0.32)){SFX.playFootstep();footstepTimer=0;}
+  }else{footstepTimer=0.3;}
 
-  // Update sprint bar
-  sprintBarEl.style.width = sprintStamina + '%';
-  sprintBarEl.style.background = sprintStamina < 20 ? '#ff4444' : '#00e5ff';
+  // Sprint bar
+  sprintBarEl.style.width=sprintStamina+'%';
+  sprintBarEl.style.background=sprintStamina<20?'#ff4444':'#00e5ff';
 
   // Portal proximity
-  const dist = player.position.distanceTo(portalMesh.position);
-  nearPortal = dist < 3.2;
-  bossNearbyEl.style.opacity    = dist < 8 ? '1' : '0';
-  interactPrompt.style.opacity = nearPortal ? '1' : '0';
-
-  // Portal audio volume based on proximity
-  Audio.setPortalVolume(Math.max(0, 1 - dist/10));
+  const dist2D=Math.sqrt(
+    (player.position.x-portalWorldPos.x)*(player.position.x-portalWorldPos.x)+
+    (player.position.z-portalWorldPos.z)*(player.position.z-portalWorldPos.z)
+  );
+  nearPortal=dist2D<4.0;
+  bossNearbyEl.style.opacity=dist2D<12?'1':'0';
+  interactPrompt.style.opacity=nearPortal?'1':'0';
+  SFX.setPortalVolume(Math.max(0,1-dist2D/15));
 
   // Collect shards
-  shardMeshes.forEach(s => {
-    if (s.collected) return;
-    const sd = player.position.distanceTo(s.mesh.position);
-    if (sd < 1.2) {
-      s.collected = true;
-      scene.remove(s.mesh);
+  shardMeshes.forEach(s=>{
+    if(s.collected)return;
+    const sd=Math.sqrt((player.position.x-s.wx)*(player.position.x-s.wx)+(player.position.z-s.wz)*(player.position.z-s.wz));
+    if(sd<1.5){
+      s.collected=true;scene.remove(s.mesh);
       collectedShards++;
-      shardCountEl.textContent = 'FRAGMENTOS: ' + collectedShards + ' / ' + totalShards;
-      Audio.playPickup();
-      // Heal a bit
-      playerHP = Math.min(100, playerHP + 5);
-      updateWorldHP();
+      shardCountEl.textContent='FRAGMENTOS: '+collectedShards+' / '+totalShards;
+      SFX.playPickup();
+      playerHP=Math.min(100,playerHP+5);updateWorldHP();
     }
-    // Rotate crystals
-    if (!s.collected && s.mesh.children[0]) {
-      s.mesh.children[0].rotation.y += 0.02;
-    }
+    if(!s.collected&&s.mesh.children[0]) s.mesh.children[0].rotation.y+=0.025;
   });
 
   // Rotate portal rings
-  if (portalMesh.children[0]) portalMesh.children[0].rotation.z += 0.012;
-  if (portalMesh.children[2]) portalMesh.children[2].rotation.z -= 0.02;
+  if(portalMesh.children[0]) portalMesh.children[0].rotation.z+=0.012;
+  if(portalMesh.children[2]) portalMesh.children[2].rotation.x+=0.018;
 
-  // Flicker light
-  if (window._flickerLight) {
-    window._flickerLight.intensity = 0.4 + Math.sin(frameTime*8)*0.15 + Math.sin(frameTime*13)*0.1;
-  }
+  // Flicker
+  if(window._flickerLight) window._flickerLight.intensity=0.35+Math.sin(frameTime*8)*0.15+Math.sin(frameTime*13)*0.1;
 
-  // Spawn portal particles
-  if (portalMesh && Math.random() < 0.4) {
-    const up = portalMesh.position.clone().normalize();
-    const right = new THREE.Vector3().crossVectors(up, new THREE.Vector3(0,1,0)).normalize();
-    if (right.length() < 0.01) right.set(1,0,0);
-    const fwd = new THREE.Vector3().crossVectors(right, up).normalize();
-    const angle = Math.random() * Math.PI * 2;
-    const r = 0.6 + Math.random() * 0.4;
-    const offset = right.clone().multiplyScalar(Math.cos(angle)*r)
-      .add(fwd.clone().multiplyScalar(Math.sin(angle)*r))
-      .add(up.clone().multiplyScalar((Math.random()-0.5)*0.5));
-    spawnParticle(portalParticles,
-      portalMesh.position.clone().add(offset),
-      { x: up.x*0.3 + (Math.random()-0.5)*0.2, y: up.y*0.3 + (Math.random()-0.5)*0.2, z: up.z*0.3 + (Math.random()-0.5)*0.2 },
-      0.8 + Math.random() * 0.6
+  // Portal particles
+  if(portalMesh&&Math.random()<0.5){
+    const pp=portalMesh.position;
+    const angle=Math.random()*Math.PI*2;
+    const pr=0.7+Math.random()*0.5;
+    spawnP(portalParticles,
+      new THREE.Vector3(pp.x+Math.cos(angle)*pr, pp.y+(Math.random()-0.5)*1.5, pp.z+Math.sin(angle)*pr),
+      {x:(Math.random()-0.5)*0.3, y:0.3+Math.random()*0.2, z:(Math.random()-0.5)*0.3},
+      0.8+Math.random()*0.6
     );
   }
 
-  // Spawn atmospheric embers
-  if (Math.random() < 0.15) {
-    const t = Math.random()*Math.PI*2, p = 0.3+Math.random()*2.4;
-    const pos = surfacePos(t, p, 0);
-    const up = pos.clone().normalize();
-    spawnParticle(emberParticles, pos, { x: up.x*0.15, y: up.y*0.15, z: up.z*0.15 }, 2+Math.random()*2);
+  // Atmospheric embers
+  if(Math.random()<0.2){
+    const ex=player.position.x+(Math.random()-0.5)*60;
+    const ez=player.position.z+(Math.random()-0.5)*60;
+    const ey=terrainHeight(ex,ez);
+    spawnP(emberParticles,
+      new THREE.Vector3(ex,ey,ez),
+      {x:(Math.random()-0.5)*0.1, y:0.15+Math.random()*0.1, z:(Math.random()-0.5)*0.1},
+      2+Math.random()*3
+    );
   }
 
-  // Update particles
-  updateParticles(portalParticles, dt);
-  updateParticles(emberParticles, dt);
+  updateP(portalParticles,dt);
+  updateP(emberParticles,dt);
 
-  // Camera — smoother with slight height offset
-  const up  = getUp(), fwd = getFwd();
-  const camDist = isSprinting ? CAM_DIST * 1.15 : CAM_DIST;
-  const camTarget = player.position.clone()
-    .add(fwd.clone().multiplyScalar(-camDist))
-    .add(up.clone().multiplyScalar(CAM_HEIGHT));
-  camera.position.lerp(camTarget, 0.08);
-  const lookTarget = player.position.clone().add(up.clone().multiplyScalar(0.5)).add(fwd.clone().multiplyScalar(1.2));
+  // ═══ CAMERA — Third-person orbit ═══
+  const camOffsetX=Math.sin(camYaw)*Math.cos(camPitch)*CAM_DIST;
+  const camOffsetY=Math.sin(camPitch)*CAM_DIST;
+  const camOffsetZ=Math.cos(camYaw)*Math.cos(camPitch)*CAM_DIST;
+
+  const targetCamPos=new THREE.Vector3(
+    player.position.x+camOffsetX,
+    player.position.y+camOffsetY,
+    player.position.z+camOffsetZ
+  );
+
+  // Terrain collision — don't let camera go below terrain
+  const camTerrainH=terrainHeight(targetCamPos.x,targetCamPos.z);
+  if(targetCamPos.y<camTerrainH+0.8) targetCamPos.y=camTerrainH+0.8;
+
+  camera.position.lerp(targetCamPos,0.1);
+
+  // Look at point slightly above player
+  const lookTarget=new THREE.Vector3(player.position.x,player.position.y+1.0,player.position.z);
   camera.lookAt(lookTarget);
 
-  // FOV change for sprint
-  const targetFov = isSprinting ? 72 : 65;
-  camera.fov += (targetFov - camera.fov) * 0.05;
+  // FOV
+  const targetFov=isSprinting?74:65;
+  camera.fov+=(targetFov-camera.fov)*0.05;
   camera.updateProjectionMatrix();
 
-  // Minimap
   drawMinimap();
+  updateCompass();
 }
 
-function loop() { animId = requestAnimationFrame(loop); update(); renderer.render(scene, camera); }
+function loop(){animId=requestAnimationFrame(loop);update();renderer.render(scene,camera);}
 
 /* ═══════════════════════════════════════════════════════════════════
-   15. INPUT — keyboard, mouse, touch
+   16. INPUT
    ═══════════════════════════════════════════════════════════════════ */
-window.addEventListener('keydown', e => {
-  keys[e.code] = true;
-  if (e.code === 'KeyE' && nearPortal && gameActive) enterBossFight();
+window.addEventListener('keydown',e=>{
+  keys[e.code]=true;
+  if(e.code==='KeyE'&&nearPortal&&gameActive) enterBossFight();
   e.preventDefault();
 });
-window.addEventListener('keyup', e => { keys[e.code] = false; });
-canvas.addEventListener('mousedown', e => { mouseDown=true; lastMouseX=e.clientX; });
-window.addEventListener('mouseup', () => { mouseDown=false; });
-window.addEventListener('mousemove', e => {
-  if (!mouseDown||!gameActive) return;
-  yaw -= (e.clientX - lastMouseX) * 0.003;
-  lastMouseX = e.clientX;
+window.addEventListener('keyup',e=>{keys[e.code]=false;});
+
+// Mouse — drag to orbit camera
+canvas.addEventListener('mousedown',e=>{mouseDown=true;lastMouseX=e.clientX;lastMouseY=e.clientY;});
+window.addEventListener('mouseup',()=>{mouseDown=false;});
+window.addEventListener('mousemove',e=>{
+  if(!mouseDown||!gameActive)return;
+  const dx=e.clientX-lastMouseX, dy=e.clientY-lastMouseY;
+  camYaw-=dx*0.004;
+  camPitch+=dy*0.004;
+  camPitch=Math.max(CAM_PITCH_MIN,Math.min(CAM_PITCH_MAX,camPitch));
+  lastMouseX=e.clientX;lastMouseY=e.clientY;
 });
-window.addEventListener('resize', () => {
-  if (!renderer) return;
-  camera.aspect = window.innerWidth/window.innerHeight;
+
+// Scroll to zoom (future: can add)
+canvas.addEventListener('wheel',e=>{
+  // e.deltaY > 0 = zoom out, < 0 = zoom in (not implemented yet, just prevent)
+  e.preventDefault();
+},{passive:false});
+
+window.addEventListener('resize',()=>{
+  if(!renderer)return;
+  camera.aspect=window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
-// Touch controls
-function detectMobile() {
-  isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  if (isMobile) {
-    document.getElementById('touch-left').style.display = 'block';
-    document.getElementById('touch-right').style.display = 'block';
-    document.getElementById('touch-sprint').style.display = 'block';
+// ═══ TOUCH ═══
+let touchSprinting=false;
+function detectMobile(){
+  isMobile=('ontouchstart' in window)||(navigator.maxTouchPoints>0);
+  if(isMobile){
+    document.getElementById('touch-left').style.display='block';
+    document.getElementById('touch-btn-e').style.display='block';
+    document.getElementById('touch-sprint').style.display='block';
+    crosshairEl.style.display='none';
+  }else{
+    crosshairEl.style.display='block';
   }
 }
 
-const touchLeft = document.getElementById('touch-left');
-const touchKnob = document.getElementById('touch-knob');
-const touchRight = document.getElementById('touch-right');
-const touchBtnE = document.getElementById('touch-btn-e');
-const touchSprintBtn = document.getElementById('touch-sprint');
+const touchLeft=document.getElementById('touch-left');
+const touchKnob=document.getElementById('touch-knob');
+const touchBtnE=document.getElementById('touch-btn-e');
+const touchSprintBtn=document.getElementById('touch-sprint');
 
-let touchLeftId = null, touchLeftStart = {x:0,y:0};
-let touchRightId = null, touchRightLastX = 0;
+let touchLeftId=null, touchLeftStart={x:0,y:0};
+let touchLookId=null, touchLookLastX=0, touchLookLastY=0;
 
-document.addEventListener('touchstart', e => {
-  Audio.init(); Audio.resume();
-  for (const t of e.changedTouches) {
-    if (t.clientX < window.innerWidth * 0.35 && touchLeftId === null) {
-      touchLeftId = t.identifier;
-      touchLeftStart = {x: t.clientX, y: t.clientY};
-      touchMove.active = true;
-      touchMove.dx = 0; touchMove.dy = 0;
-    } else if (t.clientX > window.innerWidth * 0.35 && touchRightId === null) {
-      touchRightId = t.identifier;
-      touchRightLastX = t.clientX;
+document.addEventListener('touchstart',e=>{
+  SFX.init();SFX.resume();
+  for(const t of e.changedTouches){
+    if(t.clientX<window.innerWidth*0.35&&touchLeftId===null){
+      touchLeftId=t.identifier;touchLeftStart={x:t.clientX,y:t.clientY};
+      touchMove.active=true;touchMove.dx=0;touchMove.dy=0;
+    }else if(touchLookId===null){
+      touchLookId=t.identifier;touchLookLastX=t.clientX;touchLookLastY=t.clientY;
     }
   }
-}, {passive: true});
+},{passive:true});
 
-document.addEventListener('touchmove', e => {
-  for (const t of e.changedTouches) {
-    if (t.identifier === touchLeftId) {
-      const dx = (t.clientX - touchLeftStart.x) / 40;
-      const dy = (t.clientY - touchLeftStart.y) / 40;
-      const mag = Math.sqrt(dx*dx+dy*dy);
-      const clamp = Math.min(mag, 1);
-      touchMove.dx = (dx/Math.max(mag,0.01))*clamp;
-      touchMove.dy = (dy/Math.max(mag,0.01))*clamp;
-      // Move knob
-      const kx = touchMove.dx * 25, ky = touchMove.dy * 25;
-      touchKnob.style.transform = 'translate(calc(-50% + '+kx+'px), calc(-50% + '+ky+'px))';
+document.addEventListener('touchmove',e=>{
+  for(const t of e.changedTouches){
+    if(t.identifier===touchLeftId){
+      const dx=(t.clientX-touchLeftStart.x)/45, dy=(t.clientY-touchLeftStart.y)/45;
+      const mag=Math.sqrt(dx*dx+dy*dy), clamp=Math.min(mag,1);
+      touchMove.dx=(dx/Math.max(mag,0.01))*clamp;
+      touchMove.dy=(dy/Math.max(mag,0.01))*clamp;
+      touchKnob.style.transform='translate(calc(-50% + '+touchMove.dx*30+'px), calc(-50% + '+touchMove.dy*30+'px))';
     }
-    if (t.identifier === touchRightId) {
-      const ddx = t.clientX - touchRightLastX;
-      yaw -= ddx * 0.004;
-      touchRightLastX = t.clientX;
+    if(t.identifier===touchLookId){
+      const ddx=t.clientX-touchLookLastX, ddy=t.clientY-touchLookLastY;
+      camYaw-=ddx*0.005;
+      camPitch+=ddy*0.005;
+      camPitch=Math.max(CAM_PITCH_MIN,Math.min(CAM_PITCH_MAX,camPitch));
+      touchLookLastX=t.clientX;touchLookLastY=t.clientY;
     }
   }
-}, {passive: true});
+},{passive:true});
 
-document.addEventListener('touchend', e => {
-  for (const t of e.changedTouches) {
-    if (t.identifier === touchLeftId) {
-      touchLeftId = null;
-      touchMove.active = false;
-      touchMove.dx = 0; touchMove.dy = 0;
-      touchKnob.style.transform = 'translate(-50%,-50%)';
+document.addEventListener('touchend',e=>{
+  for(const t of e.changedTouches){
+    if(t.identifier===touchLeftId){
+      touchLeftId=null;touchMove.active=false;touchMove.dx=0;touchMove.dy=0;
+      touchKnob.style.transform='translate(-50%,-50%)';
     }
-    if (t.identifier === touchRightId) {
-      touchRightId = null;
-    }
+    if(t.identifier===touchLookId) touchLookId=null;
   }
-}, {passive: true});
+},{passive:true});
 
-touchBtnE.addEventListener('touchstart', e => {
-  e.preventDefault();
-  if (nearPortal && gameActive) enterBossFight();
+touchBtnE.addEventListener('touchstart',e=>{e.preventDefault();if(nearPortal&&gameActive)enterBossFight();});
+touchSprintBtn.addEventListener('touchstart',e=>{e.preventDefault();touchSprinting=true;});
+touchSprintBtn.addEventListener('touchend',e=>{e.preventDefault();touchSprinting=false;});
+
+/* ═══════════════════════════════════════════════════════════════════
+   17. START / RESPAWN
+   ═══════════════════════════════════════════════════════════════════ */
+document.getElementById('start-btn').addEventListener('click',()=>{
+  SFX.init();SFX.resume();SFX.startAmbient();
+  introScreen.style.display='none';hud.style.display='block';
+  gameActive=true;detectMobile();initThree();loop();
 });
 
-touchSprintBtn.addEventListener('touchstart', e => {
-  e.preventDefault();
-  keys['ShiftLeft'] = true;
-});
-touchSprintBtn.addEventListener('touchend', e => {
-  e.preventDefault();
-  keys['ShiftLeft'] = false;
+document.getElementById('respawn-btn').addEventListener('click',()=>{
+  deathScreen.style.display='none';hud.style.display='block';
+  playerHP=100;updateWorldHP();gameActive=true;
+  player.position.set(0,terrainHeight(0,0)+PLAYER_HEIGHT,0);
+  SFX.startAmbient();loop();
 });
 
 /* ═══════════════════════════════════════════════════════════════════
-   16. START GAME
+   18. BOSS FIGHT (same logic, local narration)
    ═══════════════════════════════════════════════════════════════════ */
-document.getElementById('start-btn').addEventListener('click', () => {
-  Audio.init(); Audio.resume();
-  Audio.startAmbient();
-  introScreen.style.display = 'none';
-  hud.style.display = 'block';
-  gameActive = true;
-  detectMobile();
-  initThree();
-  loop();
-});
-
-document.getElementById('respawn-btn').addEventListener('click', () => {
-  deathScreen.style.display = 'none';
-  hud.style.display = 'block';
-  playerHP = 100;
-  updateWorldHP();
-  gameActive = true;
-  player.position.set(0, PLANET_R + PLAYER_HEIGHT, 0);
-  Audio.startAmbient();
-  loop();
-});
-
-/* ═══════════════════════════════════════════════════════════════════
-   17. BOSS FIGHT — with local narration & audio
-   ═══════════════════════════════════════════════════════════════════ */
-let bossHP=300, playerBossHP=100, stamina=100, heals=3, bossLocked=false, bossPhase=1;
+let bossHP=300,playerBossHP=100,stamina=100,heals=3,bossLocked=false,bossPhase=1;
 const BOSS_MAX=[0,300,180];
 let staminaIv;
-let logLines = ['El combate comienza...'];
-const bAttDmg = { 'embestida':18,'rayo laser':25,'golpe pesado':30,'detonacion EMP':15,'rafaga triple':22,'nova nuclear':35 };
+let logLines=['El combate comienza...'];
+const bAttDmg={'embestida':18,'rayo laser':25,'golpe pesado':30,'detonacion EMP':15,'rafaga triple':22,'nova nuclear':35};
 
-function enterBossFight() {
-  gameActive=false; cancelAnimationFrame(animId);
-  Audio.stopAmbient();
-  bossHP=300; playerBossHP=100; stamina=100; heals=3; bossPhase=1; bossLocked=false;
+function enterBossFight(){
+  gameActive=false;cancelAnimationFrame(animId);SFX.stopAmbient();
+  bossHP=300;playerBossHP=100;stamina=100;heals=3;bossPhase=1;bossLocked=false;
   logLines=['El combate comienza...'];
-  hud.style.display='none';
-  bossScreen.style.display='flex';
+  hud.style.display='none';bossScreen.style.display='flex';
   renderBoss();
-  staminaIv = setInterval(() => { stamina=Math.min(100,stamina+4); updateBars(); }, 250);
+  staminaIv=setInterval(()=>{stamina=Math.min(100,stamina+4);updateBars();},250);
 }
 
-function exitBoss(won) {
-  clearInterval(staminaIv);
-  bossScreen.style.display='none';
-  if (won) {
-    playerHP = Math.max(20, playerBossHP);
-    // Victory — all shards collected as bonus
-    collectedShards = totalShards;
-    shardCountEl.textContent = 'FRAGMENTOS: ' + collectedShards + ' / ' + totalShards;
-  } else {
-    playerHP = playerBossHP > 0 ? Math.max(20, playerBossHP) : 0;
-  }
+function exitBoss(won){
+  clearInterval(staminaIv);bossScreen.style.display='none';
+  if(won){playerHP=Math.max(20,playerBossHP);collectedShards=totalShards;shardCountEl.textContent='FRAGMENTOS: '+collectedShards+' / '+totalShards;}
+  else{playerHP=playerBossHP>0?Math.max(20,playerBossHP):0;}
   updateWorldHP();
-
-  if (playerHP <= 0) {
-    // Death screen
-    deathScreen.style.display = 'flex';
-    Audio.playDamage();
-    return;
-  }
-
-  gameActive=true; hud.style.display='block';
-  Audio.startAmbient();
-  loop();
+  if(playerHP<=0){deathScreen.style.display='flex';SFX.playDamage();return;}
+  gameActive=true;hud.style.display='block';SFX.startAmbient();loop();
 }
 
-function updateWorldHP() {
-  hpBar.style.width = Math.max(0,playerHP)+'%';
-  hpText.textContent = Math.max(0,playerHP)+' / 100';
-  if (playerHP <= 30) { hpBar.style.background = '#ff4444'; }
-  else if (playerHP <= 60) { hpBar.style.background = '#ffaa00'; }
-  else { hpBar.style.background = '#00e5ff'; }
+function updateWorldHP(){
+  hpBar.style.width=Math.max(0,playerHP)+'%';
+  hpText.textContent=Math.max(0,playerHP)+' / 100';
+  hpBar.style.background=playerHP<=30?'#ff4444':playerHP<=60?'#ffaa00':'#00e5ff';
 }
 
-function updateBars() {
-  const pb = document.getElementById('b-php');
-  if(pb) pb.style.width=Math.max(0,playerBossHP)+'%';
-  const sb = document.getElementById('b-sta');
-  if(sb){
-    const p=Math.max(0,stamina);
-    sb.style.width=p+'%';
-    sb.style.background=p<30?'#ff4444':p<60?'#ffaa00':'#00e5ff';
-  }
-  const bh = document.getElementById('b-bhp');
-  if(bh) bh.style.width=Math.max(0,bossHP/BOSS_MAX[bossPhase]*100)+'%';
-  const bt = document.getElementById('b-bht');
-  if(bt) bt.textContent=bossHP+' / '+BOSS_MAX[bossPhase];
-  const pt = document.getElementById('b-pht');
-  if(pt) pt.textContent=playerBossHP+' / 100';
-  const st = document.getElementById('b-stt');
-  if(st){
-    st.textContent=Math.round(stamina);
-    st.style.color=stamina<30?'#ff4444':stamina<60?'#ffaa00':'#00e5ff';
-  }
-  const hl = document.getElementById('b-hls');
-  if(hl) hl.innerHTML=[0,1,2].map(i=>'<div style="width:14px;height:14px;border:1px solid '+(i<heals?'#00e5ff':'#222')+';background:'+(i<heals?'#00e5ff22':'transparent')+';display:inline-block;margin-right:4px;border-radius:2px;"></div>').join('');
+function updateBars(){
+  const pb=document.getElementById('b-php');if(pb)pb.style.width=Math.max(0,playerBossHP)+'%';
+  const sb=document.getElementById('b-sta');if(sb){const p=Math.max(0,stamina);sb.style.width=p+'%';sb.style.background=p<30?'#ff4444':p<60?'#ffaa00':'#00e5ff';}
+  const bh=document.getElementById('b-bhp');if(bh)bh.style.width=Math.max(0,bossHP/BOSS_MAX[bossPhase]*100)+'%';
+  const bt=document.getElementById('b-bht');if(bt)bt.textContent=bossHP+' / '+BOSS_MAX[bossPhase];
+  const pt=document.getElementById('b-pht');if(pt)pt.textContent=playerBossHP+' / 100';
+  const st=document.getElementById('b-stt');if(st){st.textContent=Math.round(stamina);st.style.color=stamina<30?'#ff4444':stamina<60?'#ffaa00':'#00e5ff';}
+  const hl=document.getElementById('b-hls');if(hl)hl.innerHTML=[0,1,2].map(i=>'<div style="width:14px;height:14px;border:1px solid '+(i<heals?'#00e5ff':'#222')+';background:'+(i<heals?'#00e5ff22':'transparent')+';display:inline-block;margin-right:4px;border-radius:2px;"></div>').join('');
 }
 
-function addLog(msg, color) {
-  logLines=[...logLines.slice(-30),'<span style="color:'+(color||'#555')+'">'+msg+'</span>'];
-  const el=document.getElementById('b-log');
-  if(el){ el.innerHTML=logLines.join('<br>'); el.scrollTop=9999; }
-}
+function addLog(msg,color){logLines=[...logLines.slice(-30),'<span style="color:'+(color||'#555')+'">'+msg+'</span>'];const el=document.getElementById('b-log');if(el){el.innerHTML=logLines.join('<br>');el.scrollTop=9999;}}
+function setNarr(t){const el=document.getElementById('b-narr');if(el)el.textContent=t;}
 
-function setNarr(t) { const el=document.getElementById('b-narr'); if(el) el.textContent=t; }
-
-function getLocalNarr(action, result) {
-  // Map action types to narrative pool keys
-  if (action === 'atk') return Narr.pick(bossPhase, 'atk');
-  if (action === 'hvy') return Narr.pick(bossPhase, 'hvy');
-  if (action === 'dge') return result === 'esquivado' ? Narr.pick(null, 'dge_ok') : Narr.pick(null, 'dge_fail');
-  if (action === 'pry') return result.includes('PARRY') ? Narr.pick(null, 'pry_ok') : Narr.pick(null, 'pry_fail');
-  if (action === 'heal') return Narr.pick(null, 'heal');
-  if (action.startsWith('Boss')) {
-    const atkName = action.replace('Boss usa ', '').trim();
-    const pool = Narr.boss_atk[atkName];
-    if (pool) return pool[Math.floor(Math.random()*pool.length)];
-  }
+function getLocalNarr(action,result){
+  if(action==='atk')return Narr.pick(bossPhase,'atk');
+  if(action==='hvy')return Narr.pick(bossPhase,'hvy');
+  if(action==='dge')return result==='esquivado'?Narr.pick(null,'dge_ok'):Narr.pick(null,'dge_fail');
+  if(action==='pry')return String(result).includes('PARRY')?Narr.pick(null,'pry_ok'):Narr.pick(null,'pry_fail');
+  if(action==='heal')return Narr.pick(null,'heal');
+  if(action.startsWith('Boss')){const an=action.replace('Boss usa ','').trim();const pool=Narr.boss_atk[an];if(pool)return pool[Math.floor(Math.random()*pool.length)];}
   return result;
 }
 
-function btnStyle(disabled, accent) {
-  return 'background:#060606;border:1px solid '+(disabled?'#0d0d0d':(accent||'#1a1a1a'))+';color:'+(disabled?'#2a2a2a':'#999')+';padding:10px 8px;font-family:inherit;font-size:10px;text-align:left;cursor:'+(disabled?'not-allowed':'pointer')+';width:100%;border-radius:3px;transition:border-color 0.2s;';
-}
+function btnStyle(dis,accent){return'background:#060606;border:1px solid '+(dis?'#0d0d0d':(accent||'#1a1a1a'))+';color:'+(dis?'#2a2a2a':'#999')+';padding:10px 8px;font-family:inherit;font-size:10px;text-align:left;cursor:'+(dis?'not-allowed':'pointer')+';width:100%;border-radius:3px;transition:border-color 0.2s;';}
 
-function renderBoss() {
+function renderBoss(){
   const col=bossPhase===1?'#e05a00':'#ff003c';
   const name=bossPhase===1?'UNIDAD Λ-7':'UNIDAD Λ-7 // BERSERKER';
   const bpct=Math.max(0,bossHP/BOSS_MAX[bossPhase]*100);
@@ -1447,143 +1093,65 @@ function renderBoss() {
     '<div style="font-size:8px;letter-spacing:4px;color:#333;margin-bottom:4px;">// FASE '+bossPhase+' //</div>'+
     '<div style="font-size:14px;font-weight:700;color:'+col+';letter-spacing:1px;margin-bottom:2px;">'+name+'</div>'+
     '<div style="display:flex;justify-content:space-between;font-size:9px;color:#555;margin-bottom:3px;"><span>BOSS HP</span><span id="b-bht" style="color:'+col+'">'+bossHP+' / '+BOSS_MAX[bossPhase]+'</span></div>'+
-    '<div style="height:7px;background:#111;border:1px solid #1a1a1a;border-radius:2px;overflow:hidden;margin-bottom:14px;">'+
-      '<div id="b-bhp" style="height:100%;width:'+bpct+'%;background:'+col+';border-radius:2px;transition:width 0.4s;"></div>'+
-    '</div>'+
-    '<div id="b-narr" style="background:#050505;border:1px solid #111;padding:10px 12px;font-size:11px;color:#777;font-style:italic;line-height:1.7;min-height:54px;margin-bottom:10px;">'+
-      (bossPhase===1?'El gigante de acero te observa desde las ruinas del portal.':'Su coraza explota. El reactor nuclear late desnudo.')+
-    '</div>'+
+    '<div style="height:7px;background:#111;border:1px solid #1a1a1a;border-radius:2px;overflow:hidden;margin-bottom:14px;"><div id="b-bhp" style="height:100%;width:'+bpct+'%;background:'+col+';border-radius:2px;transition:width 0.4s;"></div></div>'+
+    '<div id="b-narr" style="background:#050505;border:1px solid #111;padding:10px 12px;font-size:11px;color:#777;font-style:italic;line-height:1.7;min-height:54px;margin-bottom:10px;">'+(bossPhase===1?'El gigante de acero te observa desde las ruinas del portal.':'Su coraza explota. El reactor nuclear late desnudo.')+'</div>'+
     '<div style="background:#050505;border:1px solid #111;padding:10px 12px;margin-bottom:10px;">'+
       '<div style="display:flex;justify-content:space-between;font-size:9px;color:#555;margin-bottom:3px;"><span>TU HP</span><span id="b-pht" style="color:#00e5ff">'+playerBossHP+' / 100</span></div>'+
       '<div style="height:6px;background:#111;border:1px solid #1a1a1a;border-radius:2px;overflow:hidden;margin-bottom:6px;"><div id="b-php" style="height:100%;width:'+playerBossHP+'%;background:#00e5ff;border-radius:2px;transition:width 0.3s;"></div></div>'+
       '<div style="display:flex;justify-content:space-between;font-size:9px;color:#444;margin-bottom:3px;"><span>STAMINA</span><span id="b-stt" style="color:#00e5ff">'+Math.round(stamina)+'</span></div>'+
       '<div style="height:4px;background:#111;border:1px solid #1a1a1a;border-radius:2px;overflow:hidden;margin-bottom:8px;"><div id="b-sta" style="height:100%;width:'+stamina+'%;background:#00e5ff;border-radius:2px;transition:width 0.2s;"></div></div>'+
       '<div id="b-hls">'+[0,1,2].map(i=>'<div style="width:14px;height:14px;border:1px solid '+(i<heals?'#00e5ff':'#222')+';background:'+(i<heals?'#00e5ff22':'transparent')+';display:inline-block;margin-right:4px;border-radius:2px;"></div>').join('')+'</div>'+
-      '<div style="font-size:8px;color:#333;margin-top:2px;">ESTIMULOS</div>'+
-    '</div>'+
+      '<div style="font-size:8px;color:#333;margin-top:2px;">ESTIMULOS</div></div>'+
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">'+
       '<button id="ba-atk"  style="'+btnStyle(stamina<15||bossLocked,'#333')+'">⚡ Ataque Rápido<br><span style="font-size:8px;color:#444;">15 STA</span></button>'+
       '<button id="ba-hvy"  style="'+btnStyle(stamina<35||bossLocked,'#e05a0044')+'">💥 Golpe Brutal<br><span style="font-size:8px;color:#444;">35 STA</span></button>'+
-      '<button id="ba-dge"  style="'+btnStyle(stamina<20||bossLocked,'#00aa7733')+'">💨 Esquivar<br><span style="font-size:8px;color:#444;">20 STA</span></button>'+
+      '<button id="ba-dge"  style="'+btnStyle(stamina<20||bossLocked,'#00aa7733')+'">💨 Esquivar<br><span style="font-size:8px;color:#444;">35 STA</span></button>'+
       '<button id="ba-pry"  style="'+btnStyle(stamina<10||bossLocked,'#0055aa33')+'">🛡 Parry<br><span style="font-size:8px;color:#444;">10 STA</span></button>'+
       '<button id="ba-heal" style="'+btnStyle(heals<=0||bossLocked,'#00aaff22')+'">💉 Estímulo<br><span style="font-size:8px;color:#444;">'+heals+' restantes</span></button>'+
-      '<button id="ba-back" style="'+btnStyle(false,'#222')+'">↩ Huir<br><span style="font-size:8px;color:#444;">volver al mundo</span></button>'+
-    '</div>'+
+      '<button id="ba-back" style="'+btnStyle(false,'#222')+'">↩ Huir<br><span style="font-size:8px;color:#444;">volver al mundo</span></button></div>'+
     '<div style="background:#030303;border:1px solid #0d0d0d;height:100px;overflow-y:auto;padding:5px 8px;">'+
       '<div style="font-size:8px;letter-spacing:2px;color:#1a1a1a;margin-bottom:3px;">COMBATE</div>'+
-      '<div id="b-log" style="font-size:9px;line-height:1.8;">'+logLines.join('<br>')+'</div>'+
-    '</div>';
+      '<div id="b-log" style="font-size:9px;line-height:1.8;">'+logLines.join('<br>')+'</div></div>';
 
   const d=bossLocked;
-  const bind=(id,fn)=>{ const el=document.getElementById(id); if(el) el.addEventListener('click',fn); };
-  bind('ba-atk',  ()=>{ if(!d&&stamina>=15) doAction('atk'); });
-  bind('ba-hvy',  ()=>{ if(!d&&stamina>=35) doAction('hvy'); });
-  bind('ba-dge',  ()=>{ if(!d&&stamina>=20) doAction('dge'); });
-  bind('ba-pry',  ()=>{ if(!d&&stamina>=10) doAction('pry'); });
-  bind('ba-heal', ()=>{ if(!d&&heals>0)     doAction('heal'); });
-  bind('ba-back', ()=>exitBoss(false));
+  const bind=(id,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener('click',fn);};
+  bind('ba-atk',()=>{if(!d&&stamina>=15)doAction('atk');});
+  bind('ba-hvy',()=>{if(!d&&stamina>=35)doAction('hvy');});
+  bind('ba-dge',()=>{if(!d&&stamina>=20)doAction('dge');});
+  bind('ba-pry',()=>{if(!d&&stamina>=10)doAction('pry');});
+  bind('ba-heal',()=>{if(!d&&heals>0)doAction('heal');});
+  bind('ba-back',()=>exitBoss(false));
 }
 
-async function doAction(type) {
-  if (bossLocked) return;
-  bossLocked=true;
-  let resultText='', dodge=false, parry=false;
+async function doAction(type){
+  if(bossLocked)return;bossLocked=true;
+  let resultText='',dodge=false,parry=false;
 
-  if (type==='atk') {
-    stamina=Math.max(0,stamina-15);
-    const crit=Math.random()<0.15, base=Math.floor(Math.random()*7)+12;
-    const dmg=crit?Math.round(base*1.8):base;
-    bossHP=Math.max(0,bossHP-dmg);
-    resultText='causas '+dmg+' daño'+(crit?' (CRÍTICO)':'');
-    addLog('⚡ Ataque Rápido: -'+dmg+' HP'+(crit?' [CRÍTICO]':''), crit?'#ffdd00':'#888');
-    Audio.playHit();
-  } else if (type==='hvy') {
-    stamina=Math.max(0,stamina-35);
-    const crit=Math.random()<0.12, base=Math.floor(Math.random()*11)+25;
-    const dmg=crit?Math.round(base*1.8):base;
-    bossHP=Math.max(0,bossHP-dmg);
-    resultText='golpe brutal causa '+dmg+' daño';
-    addLog('💥 Golpe Brutal: -'+dmg+' HP'+(crit?' [CRÍTICO]':''), crit?'#fff':'#aaa');
-    Audio.playHit();
-  } else if (type==='dge') {
-    stamina=Math.max(0,stamina-20); dodge=true;
-    resultText='te preparas para esquivar';
-    addLog('💨 Esquivas y esperas...','#00ff99');
-  } else if (type==='pry') {
-    stamina=Math.max(0,stamina-10); parry=true;
-    resultText='postura de parry lista';
-    addLog('🛡 Postura de parry...','#00aaff');
-  } else if (type==='heal') {
-    heals--; playerBossHP=Math.min(100,playerBossHP+30);
-    resultText='te curas 30 HP';
-    addLog('💉 +30 HP recuperados','#00e5ff');
-    Audio.playHeal();
-  }
+  if(type==='atk'){stamina=Math.max(0,stamina-15);const cr=Math.random()<0.15,base=Math.floor(Math.random()*7)+12;const dmg=cr?Math.round(base*1.8):base;bossHP=Math.max(0,bossHP-dmg);resultText='causas '+dmg+' daño'+(cr?' (CRÍTICO)':'');addLog('⚡ Ataque Rápido: -'+dmg+' HP'+(cr?' [CRÍTICO]':''),cr?'#ffdd00':'#888');SFX.playHit();}
+  else if(type==='hvy'){stamina=Math.max(0,stamina-35);const cr=Math.random()<0.12,base=Math.floor(Math.random()*11)+25;const dmg=cr?Math.round(base*1.8):base;bossHP=Math.max(0,bossHP-dmg);resultText='golpe brutal causa '+dmg+' daño';addLog('💥 Golpe Brutal: -'+dmg+' HP'+(cr?' [CRÍTICO]':''),cr?'#fff':'#aaa');SFX.playHit();}
+  else if(type==='dge'){stamina=Math.max(0,stamina-20);dodge=true;resultText='te preparas para esquivar';addLog('💨 Esquivas y esperas...','#00ff99');}
+  else if(type==='pry'){stamina=Math.max(0,stamina-10);parry=true;resultText='postura de parry lista';addLog('🛡 Postura de parry...','#00aaff');}
+  else if(type==='heal'){heals--;playerBossHP=Math.min(100,playerBossHP+30);resultText='te curas 30 HP';addLog('💉 +30 HP recuperados','#00e5ff');SFX.playHeal();}
 
-  // Local narration instead of broken API call
-  setNarr(getLocalNarr(type, resultText));
+  setNarr(getLocalNarr(type,resultText));
 
-  if (bossHP<=0 && bossPhase===1) {
-    const narr = Narr.transition[Math.floor(Math.random()*Narr.transition.length)];
-    addLog('⚠ TRANSICIÓN DE FASE — el boss muta...','#ff6600');
-    setNarr(narr);
-    screenShake();
-    Audio.playDamage();
-    bossPhase=2; bossHP=BOSS_MAX[2]; bossLocked=false;
-    setTimeout(()=>renderBoss(), 800);
-    return;
-  }
-  if (bossHP<=0 && bossPhase===2) {
-    clearInterval(staminaIv);
-    const narr = Narr.victory[Math.floor(Math.random()*Narr.victory.length)];
-    addLog('💀 BOSS ELIMINADO','#00e5ff');
-    setNarr(narr);
-    Audio.playHit();
-    setTimeout(()=>exitBoss(true),2500);
-    return;
-  }
+  if(bossHP<=0&&bossPhase===1){addLog('⚠ TRANSICIÓN DE FASE — el boss muta...','#ff6600');setNarr(Narr.transition[Math.floor(Math.random()*Narr.transition.length)]);screenShake();SFX.playDamage();bossPhase=2;bossHP=BOSS_MAX[2];bossLocked=false;setTimeout(()=>renderBoss(),800);return;}
+  if(bossHP<=0&&bossPhase===2){clearInterval(staminaIv);addLog('💀 BOSS ELIMINADO','#00e5ff');setNarr(Narr.victory[Math.floor(Math.random()*Narr.victory.length)]);SFX.playHit();setTimeout(()=>exitBoss(true),2500);return;}
 
-  // Boss counter-attack
   setTimeout(()=>{
-    const atks=bossPhase===1
-      ?['embestida','rayo laser','golpe pesado','detonacion EMP']
-      :['embestida','rayo laser','golpe pesado','rafaga triple','nova nuclear'];
+    const atks=bossPhase===1?['embestida','rayo laser','golpe pesado','detonacion EMP']:['embestida','rayo laser','golpe pesado','rafaga triple','nova nuclear'];
     const atk=atks[Math.floor(Math.random()*atks.length)];
     let bdmg=bAttDmg[atk]||20;
-
-    if (dodge) {
-      bdmg=0;
-      addLog('👾 '+atk.toUpperCase()+' — ESQUIVADO','#00ff99');
-      Audio.playFootstep();
-    } else if (parry&&Math.random()<0.55) {
-      bdmg=Math.round(bdmg*0.12);
-      addLog('👾 '+atk.toUpperCase()+' — PARRY! '+bdmg+' daño','#00aaff');
-      Audio.playHit();
-    } else {
-      bdmg=Math.max(1,bdmg+Math.floor(Math.random()*5)-2);
-      addLog('👾 '+atk.toUpperCase()+': -'+bdmg+' HP','#ff4444');
-      Audio.playDamage();
-      screenShake();
-    }
+    if(dodge){bdmg=0;addLog('👾 '+atk.toUpperCase()+' — ESQUIVADO','#00ff99');SFX.playFootstep();}
+    else if(parry&&Math.random()<0.55){bdmg=Math.round(bdmg*0.12);addLog('👾 '+atk.toUpperCase()+' — PARRY! '+bdmg+' daño','#00aaff');SFX.playHit();}
+    else{bdmg=Math.max(1,bdmg+Math.floor(Math.random()*5)-2);addLog('👾 '+atk.toUpperCase()+': -'+bdmg+' HP','#ff4444');SFX.playDamage();screenShake();}
     playerBossHP=Math.max(0,playerBossHP-bdmg);
-
-    const narrText = bdmg===0
-      ? Narr.pick(null, 'dge_ok')
-      : getLocalNarr('Boss usa '+atk, bdmg>0?'te golpea por '+bdmg:'esquivado');
-    setNarr(narrText);
-
-    if (playerBossHP<=0) {
-      clearInterval(staminaIv);
-      const narr = Narr.death[Math.floor(Math.random()*Narr.death.length)];
-      addLog('☠ HAS MUERTO','#ff003c');
-      setNarr(narr);
-      setTimeout(()=>exitBoss(false),2500);
-      return;
-    }
-    bossLocked=false; renderBoss();
+    setNarr(bdmg===0?Narr.pick(null,'dge_ok'):getLocalNarr('Boss usa '+atk,bdmg>0?'te golpea por '+bdmg:'esquivado'));
+    if(playerBossHP<=0){clearInterval(staminaIv);addLog('☠ HAS MUERTO','#ff003c');setNarr(Narr.death[Math.floor(Math.random()*Narr.death.length)]);setTimeout(()=>exitBoss(false),2500);return;}
+    bossLocked=false;renderBoss();
   },700);
 
-  updateBars(); renderBoss();
+  updateBars();renderBoss();
 }
 
 })();
